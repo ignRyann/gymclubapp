@@ -1,5 +1,7 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, unused_import, avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
@@ -74,17 +76,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                button(context, 'SIGN UP', () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => const SignInScreen())));
-                })
+                button(context, 'SIGN UP', () async {
+                  await signUp(
+                      context, _emailTextController, _passwordTextController);
+                }),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> signUp(
+      BuildContext context,
+      TextEditingController emailTextController,
+      TextEditingController passwordTextController) async {
+    try {
+      final credentials = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailTextController.text,
+              password: passwordTextController.text);
+      //     .then((value) {
+      //   Navigator.push(context,
+      //       MaterialPageRoute(builder: ((context) => const SignInScreen())));
+      // });
+      final user = credentials.user;
+      await user?.sendEmailVerification().then((value) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const SignInScreen())));
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else {
+        print('The account aleady exists for the email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

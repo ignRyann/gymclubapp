@@ -1,7 +1,11 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:firebase_core/firebase_core.dart';
+// Firebase Imports
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
