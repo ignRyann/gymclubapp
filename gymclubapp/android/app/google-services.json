@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "739772806044",
+    "project_id": "gymclub-d78eb",
+    "storage_bucket": "gymclub-d78eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739772806044:android:256ba7bf0163b9100a8e59",
+        "android_client_info": {
+          "package_name": "com.example.gymclubapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739772806044-s25of9ctqs26ieusqbogofu018f87dc5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6fvfo-S2SUL-cyjDgLeVMtC2LQOX_9Aw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739772806044-s25of9ctqs26ieusqbogofu018f87dc5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "739772806044-3rbl2alja75merh2rqojmsl7tcinrpqs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gymclubapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
