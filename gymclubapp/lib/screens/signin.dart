@@ -40,13 +40,10 @@ class _SignInScreenState extends State<SignInScreen> {
     _passwordController.addListener(onChange);
 
     // [Widget] Error Message
-    final errorMessage = Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Text(
-        _errorMessage,
-        style: const TextStyle(fontSize: 14.0, color: Colors.red),
-        textAlign: TextAlign.center,
-      ),
+    final errorMessage = Text(
+      _errorMessage,
+      style: const TextStyle(fontSize: 14.0, color: Colors.red),
+      textAlign: TextAlign.center,
     );
 
     // [Widget] Email TextFormField
@@ -83,6 +80,7 @@ class _SignInScreenState extends State<SignInScreen> {
     // [Widget] Password TextFormField
     final password = TextFormField(
       controller: _passwordController,
+      obscureText: true,
       enableSuggestions: false,
       autocorrect: false,
       autofocus: false,
@@ -128,7 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
         ));
 
     // [Widget] Login Elevated Button
-    final logInButton = Container(
+    final signInButton = Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
@@ -140,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: ((context) => const SignInScreen())));
+                      builder: ((context) => const HomeScreen())));
             }).catchError((error) {
               processError(error);
             });
@@ -212,7 +210,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         password,
                         forgetPassword,
                         const SizedBox(height: 20),
-                        logInButton,
+                        signInButton,
                         signUp,
                       ],
                     ))),
@@ -220,14 +218,16 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  // Sign Up Method
+  // Sign In Method
   Future<void> signInMethod(
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
     try {
       final credentials = await _auth.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
+        email: emailController.text,
+        password: passwordController.text,
+      );
     } catch (e) {
       print(e.toString());
     }

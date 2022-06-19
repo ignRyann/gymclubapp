@@ -1,7 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -16,6 +15,32 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // [Widget] Sign Out Elevated Button
+    final recoverAccount = Container(
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.pressed)) {
+                return Colors.black26;
+              }
+              return Colors.white;
+            }),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)))),
+        child: const Text(
+          'RECOVER ACCOUNT',
+          style: TextStyle(
+              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ),
+    );
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -48,12 +73,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                button(context, 'RESET PASSWORD', () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => const SignInScreen())));
-                })
+                recoverAccount
               ],
             ),
           ),
