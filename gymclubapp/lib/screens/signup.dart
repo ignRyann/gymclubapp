@@ -34,61 +34,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-          hexStringToColor("000000"),
-          hexStringToColor("2d2b2e"),
-          hexStringToColor("000000"),
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        decoration: BoxDecoration(gradient: gradientDesign()),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
-            child: Column(
-              children: <Widget>[
-                logoWidget("images/dumbell.png", 120, 120),
-                const SizedBox(
-                  height: 20,
-                ),
-                reusableTextField("Enter Username", Icons.person_outline,
-                    _usernameTextController),
-                const SizedBox(
-                  height: 20,
-                ),
-                reusableTextField(
-                  "Enter Email Address",
-                  Icons.email_outlined,
+              padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
+              child: signUpForm(
+                  context,
+                  _usernameTextController,
                   _emailTextController,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                reusablePasswordField(
-                  "Enter Password",
                   _passwordTextController,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                reusablePasswordField(
-                  "Confirm Password",
                   _confirmPasswordTextController,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                button(context, 'SIGN UP', () async {
-                  await signUp(
-                      context, _emailTextController, _passwordTextController);
-                }),
-              ],
-            ),
-          ),
+                  signUpMethod)),
         ),
       ),
     );
   }
 
-  Future<void> signUp(
+// Sign Up Method
+  Future<void> signUpMethod(
       BuildContext context,
       TextEditingController emailTextController,
       TextEditingController passwordTextController) async {
@@ -97,10 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .createUserWithEmailAndPassword(
               email: emailTextController.text,
               password: passwordTextController.text);
-      //     .then((value) {
-      //   Navigator.push(context,
-      //       MaterialPageRoute(builder: ((context) => const SignInScreen())));
-      // });
+
       final user = credentials.user;
       await user?.sendEmailVerification().then((value) {
         Navigator.push(context,
@@ -116,4 +76,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print(e);
     }
   }
+}
+
+// Sign Up Form Widget
+Column signUpForm(
+    BuildContext context,
+    TextEditingController usernameTextController,
+    TextEditingController emailTextController,
+    TextEditingController passwordTextController,
+    TextEditingController confirmPasswordTextController,
+    Function signUpFunction) {
+  return Column(
+    children: <Widget>[
+      logoWidget("images/dumbell.png", 120, 120),
+      const SizedBox(
+        height: 20,
+      ),
+      reusableTextField(
+          "Enter Username", Icons.person_outline, usernameTextController),
+      const SizedBox(
+        height: 20,
+      ),
+      reusableTextField(
+        "Enter Email Address",
+        Icons.email_outlined,
+        emailTextController,
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      reusablePasswordField(
+        "Enter Password",
+        passwordTextController,
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      reusablePasswordField(
+        "Confirm Password",
+        confirmPasswordTextController,
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      button(context, 'SIGN UP', () async {
+        await signUpFunction(
+            context, emailTextController, passwordTextController);
+      }),
+    ],
+  );
 }

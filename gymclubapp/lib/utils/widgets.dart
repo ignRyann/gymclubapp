@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
+import 'colour_utils.dart';
 
+// Gradient Widget
+LinearGradient gradientDesign() {
+  return LinearGradient(colors: [
+    hexStringToColor("000000"),
+    hexStringToColor("2d2b2e"),
+    hexStringToColor("000000"),
+  ], begin: Alignment.topCenter, end: Alignment.bottomCenter);
+}
+
+// Image Widget
 Image logoWidget(String imageName, double w, double h) {
   return Image.asset(
     imageName,
@@ -10,6 +21,7 @@ Image logoWidget(String imageName, double w, double h) {
   );
 }
 
+// TextField Widget
 TextField reusableTextField(
     String text, IconData icon, TextEditingController controller) {
   return TextField(
@@ -35,6 +47,7 @@ TextField reusableTextField(
   );
 }
 
+// Textfield Widget for Passwords
 TextField reusablePasswordField(String text, TextEditingController controller) {
   return TextField(
     controller: controller,
@@ -60,6 +73,7 @@ TextField reusablePasswordField(String text, TextEditingController controller) {
   );
 }
 
+// Button
 Container button(BuildContext context, String text, Function onTap) {
   return Container(
     width: MediaQuery.of(context).size.width,
