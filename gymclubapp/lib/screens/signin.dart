@@ -132,15 +132,22 @@ class _SignInScreenState extends State<SignInScreen> {
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            signInMethod(_emailController, _passwordController)
-                .then((userVerified) {
-              if (userVerified) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => const HomeScreen())));
+            await signInMethod(_emailController, _passwordController)
+                .then((user) {
+              if (user != null) {
+                if (user.emailVerified) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => const HomeScreen())));
+                } else {
+                  user.sendEmailVerification();
+                  showPopUpDialog(
+                      'Account not verified. A \'Verification Email\' has been sent.',
+                      null);
+                }
               }
             });
           }
@@ -220,7 +227,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   // Sign In Method
-  Future<bool> signInMethod(
+  Future<User?> signInMethod(
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
@@ -229,21 +236,16 @@ class _SignInScreenState extends State<SignInScreen> {
         email: emailController.text,
         password: passwordController.text,
       );
-
-      final User? user = credentials.user;
-
-      if (user != null) {
-        if (user.emailVerified) {
-          return true;
-        }
+      if (credentials.user != null) {
+        return credentials.user;
       }
-      return false;
     } catch (e) {
       showPopUpDialog(e.toString(), null);
-      return false;
     }
+    return null;
   }
 
+  // Pop Up Dialog
   void showPopUpDialog(String errorMsg, MaterialPageRoute? route) {
     showDialog(
         context: context,
@@ -292,22 +294,5 @@ class _SignInScreenState extends State<SignInScreen> {
             ],
           );
         });
-  }
-
-  // Process Error Method
-  void processError(PlatformException error) {
-    if (error.code == 'ERROR_USER_NOT_FOUND') {
-      setState(() {
-        _errorMessage = "Unable to find user. Please register";
-      });
-    } else if (error.code == 'ERROR_WRONG_PASSWORD') {
-      setState(() {
-        _errorMessage = "Incorrect Password";
-      });
-    } else {
-      setState(() {
-        _errorMessage = "There was an error logging in. Please try again later";
-      });
-    }
   }
 }
