@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 // Firebase Imports
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,39 +22,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    // User Signed In ? HomeScreen() : SignInScreen()
-    if (authenticated(auth)) {
-      return const MaterialApp(
+    return MultiProvider(
+      providers: [
+        Provider<AuthService>(
+          create: (_) => AuthService(),
+        ),
+        StreamProvider(
+          create: (context) => context.read<AuthService>().authState,
+          initialData: null,
+        ),
+      ],
+      child: const MaterialApp(
         title: 'GymClub',
-        home: HomeScreen(),
-      );
-    } else {
-      return const MaterialApp(
-        title: 'GymClub',
-        home: SignInScreen(),
-      );
-    }
-  }
-
-  // User Signed In & Verified Method
-  bool authenticated(FirebaseAuth auth) {
-    bool authenticated = false;
-    auth.authStateChanges().listen((User? user) {
-      if (user == null) {
-        print("No User");
-        authenticated = false;
-      } else {
-        if (user.emailVerified) {
-          print("User verified");
-          authenticated = true;
-        } else {
-          print("User not verified");
-          authenticated = false;
-        }
-      }
-    });
-
-    return authenticated;
+        home: SplashScreen(),
+      ),
+    );
   }
 }
