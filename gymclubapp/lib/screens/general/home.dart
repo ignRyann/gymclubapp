@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
 
-import '../../utils/widgets.dart';
+import 'package:gymclubapp/utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           title: const Text(
-            "Home Page",
+            'Home Page',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           )),
       body: Container(
@@ -64,9 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     logoWidget("images/dumbell.png", 120, 120),
-                    const SizedBox(
-                      height: 120,
-                    ),
+                    const SizedBox(height: 120),
                     signOut,
                   ],
                 ))),
