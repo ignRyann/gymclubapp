@@ -1,4 +1,4 @@
-export 'home.dart';
-export 'signin.dart';
-export 'signup.dart';
-export 'forgotpassword.dart';
+export 'general/home.dart';
+export 'authentication/signin.dart';
+export 'authentication/signup.dart';
+export 'authentication/forgotpassword.dart';

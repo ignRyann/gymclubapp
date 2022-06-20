@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser != null) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    // User Signed In ? HomeScreen() : SignInScreen()
+    if (authenticated(auth)) {
       return const MaterialApp(
         title: 'GymClub',
         home: HomeScreen(),
@@ -32,5 +34,26 @@ class MyApp extends StatelessWidget {
         home: SignInScreen(),
       );
     }
+  }
+
+  // User Signed In & Verified Method
+  bool authenticated(FirebaseAuth auth) {
+    bool authenticated = false;
+    auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print("No User");
+        authenticated = false;
+      } else {
+        if (user.emailVerified) {
+          print("User verified");
+          authenticated = true;
+        } else {
+          print("User not verified");
+          authenticated = false;
+        }
+      }
+    });
+
+    return authenticated;
   }
 }

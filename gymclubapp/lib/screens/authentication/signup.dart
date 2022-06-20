@@ -251,6 +251,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         confirmPassword,
                         const SizedBox(height: 20),
                         signUpButton,
+                        const SizedBox(height: 200),
                       ],
                     )),
               )),
