@@ -3,7 +3,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
@@ -191,13 +190,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           if (_formKey.currentState!.validate()) {
             signUpMethod(
                     _usernameController, _emailController, _passwordController)
-                .then((uid) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => const SignInScreen())));
-            }).catchError((error) {
-              processError(error);
+                .then((accountCreated) {
+              if (accountCreated) {
+                showPopUpDialog(
+                    'An Email Verification has been sent!',
+                    MaterialPageRoute(
+                        builder: (((context) => const SignInScreen()))));
+              }
             });
           }
         },
@@ -259,7 +258,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   // Sign Up Method
-  Future<void> signUpMethod(
+  Future<bool> signUpMethod(
     TextEditingController usernameController,
     TextEditingController emailController,
     TextEditingController passwordController,
@@ -270,33 +269,68 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: passwordController.text,
       );
 
-      await credentials.user?.sendEmailVerification();
-
-      setState(() {
-        _errorMessage = 'Email Verification Sent';
-      });
+      User? user = credentials.user;
+      if (user != null) {
+        await credentials.user?.sendEmailVerification();
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
-      print(e.toString());
-      setState(() {
-        _errorMessage = e.toString();
-      });
+      showPopUpDialog(e.toString(),
+          MaterialPageRoute(builder: (((context) => const SignInScreen()))));
+      return false;
     }
   }
 
-  // Process Error Method
-  void processError(PlatformException error) {
-    if (error.code == 'ERROR_USER_NOT_FOUND') {
-      setState(() {
-        _errorMessage = "Unable to find user. Please register";
-      });
-    } else if (error.code == 'ERROR_WRONG_PASSWORD') {
-      setState(() {
-        _errorMessage = "Incorrect Password";
-      });
-    } else {
-      setState(() {
-        _errorMessage = "There was an error logging in. Please try again later";
-      });
-    }
+  // Pop Up Dialog
+  void showPopUpDialog(String errorMsg, MaterialPageRoute? route) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Text(
+              errorMsg,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ),
+            //buttons?
+            actions: <Widget>[
+              Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(120)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (route != null) {
+                      Navigator.push(context, route);
+                    }
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return Colors.black;
+                        }
+                        return Colors.black;
+                      }),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)))),
+                  child: const Text(
+                    "Close",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 }

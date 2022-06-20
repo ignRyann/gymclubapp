@@ -134,13 +134,14 @@ class _SignInScreenState extends State<SignInScreen> {
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            signInMethod(_emailController, _passwordController).then((uid) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => const HomeScreen())));
-            }).catchError((error) {
-              processError(error);
+            signInMethod(_emailController, _passwordController)
+                .then((userVerified) {
+              if (userVerified) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => const HomeScreen())));
+              }
             });
           }
         },
@@ -219,7 +220,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   // Sign In Method
-  Future<void> signInMethod(
+  Future<bool> signInMethod(
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
@@ -228,9 +229,69 @@ class _SignInScreenState extends State<SignInScreen> {
         email: emailController.text,
         password: passwordController.text,
       );
+
+      final User? user = credentials.user;
+
+      if (user != null) {
+        if (user.emailVerified) {
+          return true;
+        }
+      }
+      return false;
     } catch (e) {
-      print(e.toString());
+      showPopUpDialog(e.toString(), null);
+      return false;
     }
+  }
+
+  void showPopUpDialog(String errorMsg, MaterialPageRoute? route) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Text(
+              errorMsg,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ),
+            //buttons?
+            actions: <Widget>[
+              Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(120)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (route != null) {
+                      Navigator.push(context, route);
+                    }
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return Colors.black;
+                        }
+                        return Colors.black;
+                      }),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)))),
+                  child: const Text(
+                    "Close",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   // Process Error Method

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
 
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
+          FirebaseAuth.instance.signOut();
           Navigator.push(context,
               MaterialPageRoute(builder: ((context) => const SignInScreen())));
         },

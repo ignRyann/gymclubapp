@@ -21,9 +21,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'GymClub',
-      home: SignInScreen(),
-    );
+    if (FirebaseAuth.instance.currentUser != null) {
+      return const MaterialApp(
+        title: 'GymClub',
+        home: HomeScreen(),
+      );
+    } else {
+      return const MaterialApp(
+        title: 'GymClub',
+        home: SignInScreen(),
+      );
+    }
   }
 }
