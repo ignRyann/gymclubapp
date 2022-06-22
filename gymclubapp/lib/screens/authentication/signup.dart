@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api,
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
@@ -16,9 +15,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // Global Key to identify the Form Widget
   final _formKey = GlobalKey<FormState>();
 
-  // Firebase Instance
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   // Controllers
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -29,20 +25,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // Error Messages
   String _errorMessage = '';
 
-  void onChange() {
-    setState(() {
-      _errorMessage = '';
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Adding Listeners to TextFields
-    _usernameController.addListener(onChange);
-    _emailController.addListener(onChange);
-    _passwordController.addListener(onChange);
-    _confirmPasswordController.addListener(onChange);
-
     // [Widget] Error Message
     final errorMessage = Text(
       _errorMessage,
@@ -59,6 +43,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
+      onChanged: ((String text) {
+        setState(() {
+          _errorMessage = '';
+        });
+      }),
       decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.person_outline,
@@ -91,6 +80,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.emailAddress,
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
+      onChanged: ((String text) {
+        setState(() {
+          _errorMessage = '';
+        });
+      }),
       decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.person_outline,
@@ -126,6 +120,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
       textInputAction: TextInputAction.done,
+      onChanged: ((String text) {
+        setState(() {
+          _errorMessage = '';
+        });
+      }),
       decoration: InputDecoration(
         prefixIcon: const Icon(
           Icons.lock_outline,
@@ -162,6 +161,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
       textInputAction: TextInputAction.done,
+      onChanged: ((String text) {
+        setState(() {
+          _errorMessage = '';
+        });
+      }),
       decoration: InputDecoration(
         prefixIcon: const Icon(
           Icons.lock_outline,
@@ -185,18 +189,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            signUpMethod(
+            await AuthService()
+                .createUserWithEmailAndPassword(
                     _usernameController, _emailController, _passwordController)
-                .then((accountCreated) {
-              if (accountCreated) {
+                .then((string) {
+              setState(() {
+                _errorMessage = string;
+              });
+              if (string == '') {
                 showPopUpDialog(
                     'An Email Verification has been sent!',
                     MaterialPageRoute(
                         builder: (((context) => const SignInScreen()))));
               }
             });
+            // signUpMethod(
+            //         _usernameController, _emailController, _passwordController)
+            //     .then((accountCreated) {
+            //   if (accountCreated) {
+            //     showPopUpDialog(
+            //         'An Email Verification has been sent!',
+            //         MaterialPageRoute(
+            //             builder: (((context) => const SignInScreen()))));
+            //   }
+            // });
           }
         },
         style: ButtonStyle(
@@ -257,31 +275,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ));
   }
 
-  // Sign Up Method
-  Future<bool> signUpMethod(
-    TextEditingController usernameController,
-    TextEditingController emailController,
-    TextEditingController passwordController,
-  ) async {
-    try {
-      final credentials = await _auth.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+  // // Sign Up Method
+  // Future<bool> signUpMethod(
+  //   TextEditingController usernameController,
+  //   TextEditingController emailController,
+  //   TextEditingController passwordController,
+  // ) async {
+  //   try {
+  //     final credentials = await _auth.createUserWithEmailAndPassword(
+  //       email: emailController.text,
+  //       password: passwordController.text,
+  //     );
 
-      User? user = credentials.user;
-      if (user != null) {
-        await credentials.user?.sendEmailVerification();
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      showPopUpDialog(e.toString(),
-          MaterialPageRoute(builder: (((context) => const SignInScreen()))));
-      return false;
-    }
-  }
+  //     User? user = credentials.user;
+  //     if (user != null) {
+  //       credentials.user?.sendEmailVerification();
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     showPopUpDialog(e.toString(),
+  //         MaterialPageRoute(builder: (((context) => const SignInScreen()))));
+  //     return false;
+  //   }
+  // }
 
   // Pop Up Dialog
   void showPopUpDialog(String errorMsg, MaterialPageRoute? route) {
