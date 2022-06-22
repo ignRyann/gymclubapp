@@ -1,8 +1,6 @@
-// ignore_for_file: library_private_types_in_public_api, unused_field, unused_local_variable, unnecessary_import, avoid_print
+// ignore_for_file: library_private_types_in_public_api
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
@@ -17,9 +15,6 @@ class _SignInScreenState extends State<SignInScreen> {
   // Global Key to identify the Form Widget
   final _formKey = GlobalKey<FormState>();
 
-  // Firebase Instance
-  final FirebaseAuth _auth = AuthService().auth;
-
   // Controllers
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -27,20 +22,10 @@ class _SignInScreenState extends State<SignInScreen> {
   // Error Messages
   String _errorMessage = '';
 
-  void onChange() {
-    setState(() {
-      _errorMessage = '';
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Adding Listeners to TextFields
-    _emailController.addListener(onChange);
-    _passwordController.addListener(onChange);
-
     // [Widget] Error Message
-    final errorMessage = Text(
+    var errorMessage = Text(
       _errorMessage,
       style: const TextStyle(fontSize: 14.0, color: Colors.red),
       textAlign: TextAlign.center,
@@ -62,6 +47,11 @@ class _SignInScreenState extends State<SignInScreen> {
       autofocus: false,
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
+      onChanged: ((String text) {
+        setState(() {
+          _errorMessage = '';
+        });
+      }),
       decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.person_outline,
@@ -87,6 +77,11 @@ class _SignInScreenState extends State<SignInScreen> {
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
       textInputAction: TextInputAction.done,
+      onChanged: ((String text) {
+        setState(() {
+          _errorMessage = '';
+        });
+      }),
       decoration: InputDecoration(
         prefixIcon: const Icon(
           Icons.lock_outline,
@@ -134,21 +129,18 @@ class _SignInScreenState extends State<SignInScreen> {
       child: ElevatedButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            await signInMethod(_emailController, _passwordController)
-                .then((user) {
-              if (user != null) {
-                if (user.emailVerified) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => const HomeScreen())));
-                } else {
-                  user.sendEmailVerification();
-                  showPopUpDialog(
-                      context,
-                      'Account not verified. A \'Verification Email\' has been sent.',
-                      null);
-                }
+            await AuthService()
+                .signInWithEmailAndPassword(
+                    _emailController, _passwordController)
+                .then((string) async {
+              setState(() {
+                _errorMessage = string;
+              });
+              if (string == '') {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HomeScreen()));
               }
             });
           }
@@ -225,24 +217,5 @@ class _SignInScreenState extends State<SignInScreen> {
                     ))),
           )),
     );
-  }
-
-  // Sign In Method
-  Future<User?> signInMethod(
-    TextEditingController emailController,
-    TextEditingController passwordController,
-  ) async {
-    try {
-      final credentials = await _auth.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      if (credentials.user != null) {
-        return credentials.user;
-      }
-    } catch (e) {
-      showPopUpDialog(context, e.toString(), null);
-    }
-    return null;
   }
 }
