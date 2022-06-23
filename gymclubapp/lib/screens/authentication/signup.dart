@@ -275,32 +275,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ));
   }
 
-  // // Sign Up Method
-  // Future<bool> signUpMethod(
-  //   TextEditingController usernameController,
-  //   TextEditingController emailController,
-  //   TextEditingController passwordController,
-  // ) async {
-  //   try {
-  //     final credentials = await _auth.createUserWithEmailAndPassword(
-  //       email: emailController.text,
-  //       password: passwordController.text,
-  //     );
-
-  //     User? user = credentials.user;
-  //     if (user != null) {
-  //       credentials.user?.sendEmailVerification();
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     showPopUpDialog(e.toString(),
-  //         MaterialPageRoute(builder: (((context) => const SignInScreen()))));
-  //     return false;
-  //   }
-  // }
-
   // Pop Up Dialog
   void showPopUpDialog(String errorMsg, MaterialPageRoute? route) {
     showDialog(

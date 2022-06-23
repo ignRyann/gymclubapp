@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
-
-import 'package:gymclubapp/screens/auth_services.dart';
 import 'package:gymclubapp/utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
