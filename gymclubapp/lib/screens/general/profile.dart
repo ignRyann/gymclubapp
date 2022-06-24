@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gymclubapp/screens/screens.dart';
 import '../../utils/widgets.dart';
-import '../auth_services.dart';
+import '../../services/auth_services.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);

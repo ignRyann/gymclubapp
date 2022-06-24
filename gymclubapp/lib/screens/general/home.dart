@@ -30,10 +30,20 @@ class _HomeScreenState extends State<HomeScreen> {
         index: _page,
         key: _bottomNavigationKey,
         backgroundColor: hexStringToColor("000000"),
-        items: const <Widget>[
-          Icon(Icons.home, size: 30),
-          Icon(Icons.add, size: 30),
-          Icon(Icons.person_outline, size: 30),
+        buttonBackgroundColor: Colors.black,
+        items: <Widget>[
+          Icon(
+            Icons.home,
+            size: 30,
+            color: _page == 0 ? Colors.white : Colors.black,
+          ),
+          Icon(Icons.add,
+              size: 30, color: _page == 1 ? Colors.white : Colors.black),
+          Icon(
+            Icons.person_outline,
+            size: 30,
+            color: _page == 2 ? Colors.white : Colors.black,
+          ),
         ],
         onTap: (index) {
           setState(() {

@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:gymclubapp/screens/general/workoutdashboard/template.dart';
 import '../../../utils/utils.dart';
 
 class WorkoutDashboardScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
   Widget build(BuildContext context) {
     // [Widget] WorkoutDashboard AppBar
     final workoutDashboardAppBar = AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black,
       elevation: 0.0,
       title: const Text(
         'DASHBOARD',
@@ -35,7 +36,6 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
-              // TODO Green or White Coloured Button?
               return Colors.green;
             }),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -49,26 +49,28 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       ),
     );
 
+    // Main Body
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       appBar: workoutDashboardAppBar,
+      backgroundColor: Colors.black,
       body: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height * 0.9,
         decoration: BoxDecoration(gradient: gradientDesign()),
         child: SingleChildScrollView(
             child: Padding(
                 padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.1, 20, 0),
+                    20, MediaQuery.of(context).size.height * 0.05, 20, 40),
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 40),
                     startFreshWorkout,
                     const SizedBox(height: 20),
                     const Divider(
                       color: Colors.white,
                       thickness: 2.0,
-                    )
+                    ),
+                    const Template(),
                   ],
                 ))),
       ),

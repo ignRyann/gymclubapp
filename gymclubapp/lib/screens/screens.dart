@@ -6,4 +6,4 @@ export 'authentication/signin.dart';
 export 'authentication/signup.dart';
 export 'authentication/forgotpassword.dart';
 export 'authentication/landing.dart';
-export 'auth_services.dart';
+export '../services/auth_services.dart';
