@@ -1,5 +1,10 @@
+// ignore: import_of_legacy_library_into_null_safe
+// ignore_for_file: avoid_print
+
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
+import 'package:gymclubapp/utils/utils.dart';
 import 'package:gymclubapp/utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -64,6 +69,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     signOut,
                   ],
                 ))),
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: hexStringToColor("000000"),
+        items: const <Widget>[
+          Icon(Icons.home, size: 30),
+          Icon(Icons.add, size: 30),
+          Icon(Icons.person_outline, size: 30),
+        ],
+        onTap: (index) {
+          //Handle button tap
+          switch (index) {
+            case 0:
+              print("Home Page");
+              break;
+            case 1:
+              print("Workout Page");
+              break;
+            case 2:
+              print("Profile Page");
+              break;
+            default:
+              print("Oh No!");
+              break;
+          }
+        },
       ),
     );
   }

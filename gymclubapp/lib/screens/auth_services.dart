@@ -15,6 +15,19 @@ class AuthService {
     return auth.currentUser;
   }
 
+  Future<bool> usernameAvailable(String username) async {
+    if (username.length < 5) {
+      return false;
+    }
+
+    final query = await db
+        .collection("users")
+        .where("username", isEqualTo: username)
+        .get();
+
+    return query.docs.isEmpty;
+  }
+
   // Create User with Email & Password
   Future<String> createUserWithEmailAndPassword(
     TextEditingController usernameController,

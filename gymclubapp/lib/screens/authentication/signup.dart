@@ -24,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // Error Messages
   String _errorMessage = '';
+  bool _usernameAvailable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +44,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
-      onChanged: ((String text) {
+      onChanged: ((String text) async {
+        final usernameAvailable = await AuthService().usernameAvailable(text);
         setState(() {
           _errorMessage = '';
+          _usernameAvailable = usernameAvailable;
         });
       }),
       decoration: InputDecoration(
@@ -53,6 +56,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Icons.person_outline,
             color: Colors.white70,
           ),
+          suffixIcon: _usernameAvailable
+              ? const Icon(
+                  Icons.check_outlined,
+                  color: Colors.green,
+                  size: 30.0,
+                )
+              : const Icon(
+                  Icons.cancel_outlined,
+                  color: Colors.red,
+                  size: 30.0,
+                ),
           labelText: 'Enter Username',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
@@ -171,7 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           Icons.lock_outline,
           color: Colors.white70,
         ),
-        labelText: 'Enter Password',
+        labelText: 'Confirm Password',
         labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
         filled: true,
         floatingLabelBehavior: FloatingLabelBehavior.never,
