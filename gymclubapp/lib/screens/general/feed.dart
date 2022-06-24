@@ -1,11 +1,10 @@
 // ignore: import_of_legacy_library_into_null_safe
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
-import 'package:gymclubapp/utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,6 +16,36 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    // [Widget] AppBar
+    final feedAppBar = AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
+      centerTitle: false,
+      automaticallyImplyLeading: false,
+      title: const Text(
+        'GYMCLUB',
+        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 22,
+            child: IconButton(
+                onPressed: (() {
+                  print("Notifications Button Pressed");
+                }),
+                icon: Icon(
+                  Icons.notifications,
+                  color: Colors.black87,
+                  size: 25,
+                )),
+          ),
+        ),
+      ],
+    );
+
     // [Widget] Sign Out Elevated Button
     final signOut = Container(
       width: MediaQuery.of(context).size.width,
@@ -47,13 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          title: const Text(
-            'Home Page',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          )),
+      appBar: feedAppBar,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -64,8 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     20, MediaQuery.of(context).size.height * 0.1, 20, 0),
                 child: Column(
                   children: <Widget>[
-                    logoWidget("images/dumbell.png", 120, 120),
-                    const SizedBox(height: 120),
+                    // logoWidget("images/dumbell.png", 120, 120),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 1.5,
+                    ),
+                    SizedBox(height: 120),
                     signOut,
                   ],
                 ))),
@@ -85,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               break;
             case 1:
               print("Workout Page");
+              // https://pub.dev/packages/modal_bottom_sheet
               break;
             case 2:
               print("Profile Page");
