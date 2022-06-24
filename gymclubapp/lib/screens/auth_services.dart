@@ -7,8 +7,6 @@ class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
 
-  Stream<User?> get authState => auth.authStateChanges();
-
   // Retrieve User if set, otherwise null
   // Might have to be async + Future<User?>
   Future<User?> getUser() async {

@@ -136,12 +136,12 @@ class _SignInScreenState extends State<SignInScreen> {
               setState(() {
                 _errorMessage = string;
               });
-              if (string == '') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
-              }
+              // if (string == '') {
+              //   Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => const HomeScreen()));
+              // }
             });
           }
         },

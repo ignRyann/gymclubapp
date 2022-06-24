@@ -22,20 +22,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<AuthService>(
-          create: (_) => AuthService(),
-        ),
-        StreamProvider(
-          create: (context) => context.read<AuthService>().authState,
-          initialData: null,
-        ),
-      ],
-      child: const MaterialApp(
-        title: 'GymClub',
-        home: SplashScreen(),
-      ),
+    return const MaterialApp(
+      title: 'GymBox',
+      home: LandingScreen(),
     );
   }
 }
