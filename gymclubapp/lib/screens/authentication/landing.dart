@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gymclubapp/screens/general/home.dart';
 import 'package:gymclubapp/screens/screens.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -15,6 +18,7 @@ class LandingScreen extends StatelessWidget {
           if (user == null || !user.emailVerified) {
             return const SignInScreen();
           } else {
+            print("${user.email} is already logged in!");
             return const HomeScreen();
           }
         } else {

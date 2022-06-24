@@ -1,11 +1,7 @@
 // ignore_for_file: avoid_print
 
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:gymclubapp/screens/screens.dart';
-import '../../utils/colour_utils.dart';
 import '../../utils/widgets.dart';
-import '../auth_services.dart';
 
 class WorkoutDashboardScreen extends StatefulWidget {
   const WorkoutDashboardScreen({Key? key}) : super(key: key);
@@ -17,58 +13,34 @@ class WorkoutDashboardScreen extends StatefulWidget {
 class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    // [Widget] AppBar
-    final feedAppBar = AppBar(
+    // [Widget] WorkoutDashboard AppBar
+    final workoutDashboardAppBar = AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      centerTitle: false,
-      automaticallyImplyLeading: false,
       title: const Text(
-        'WORKOUT',
+        'DASHBOARD',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 22,
-            child: IconButton(
-                onPressed: (() {
-                  print("Notifications Button Pressed");
-                }),
-                icon: const Icon(
-                  Icons.notifications,
-                  color: Colors.black87,
-                  size: 25,
-                )),
-          ),
-        ),
-      ],
     );
 
-    // [Widget] Sign Out Elevated Button
-    final signOut = Container(
+    // [Widget] Start Workout Elevated Button
+    final startFreshWorkout = Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
-      margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
-          AuthService().signOut(context);
+          // TODO Redirect to 'Start Workout' Page
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.pressed)) {
-                return Colors.black26;
-              }
-              return Colors.white;
+              return Colors.green;
             }),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)))),
         child: const Text(
-          'SIGN OUT',
+          'Start a Fresh Workout',
           style: TextStyle(
               color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
         ),
@@ -77,7 +49,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: feedAppBar,
+      appBar: workoutDashboardAppBar,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -88,41 +60,15 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                     20, MediaQuery.of(context).size.height * 0.1, 20, 0),
                 child: Column(
                   children: <Widget>[
-                    // logoWidget("images/dumbell.png", 120, 120),
+                    const SizedBox(height: 40),
+                    startFreshWorkout,
+                    const SizedBox(height: 20),
                     const Divider(
                       color: Colors.white,
-                      thickness: 1.5,
-                    ),
-                    const SizedBox(height: 120),
-                    signOut,
+                      thickness: 2.0,
+                    )
                   ],
                 ))),
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: hexStringToColor("000000"),
-        items: const <Widget>[
-          Icon(Icons.home, size: 30),
-          Icon(Icons.add, size: 30),
-          Icon(Icons.person_outline, size: 30),
-        ],
-        onTap: (index) {
-          //Handle button tap
-          switch (index) {
-            case 0:
-              print("Home Page");
-              break;
-            case 1:
-              print("Workout Page");
-              // https://pub.dev/packages/modal_bottom_sheet
-              break;
-            case 2:
-              print("Profile Page");
-              break;
-            default:
-              print("Oh No!");
-              break;
-          }
-        },
       ),
     );
   }

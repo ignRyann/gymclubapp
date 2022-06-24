@@ -233,9 +233,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.pressed)) {
-                return Colors.black26;
-              }
               return Colors.white;
             }),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

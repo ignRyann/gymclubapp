@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:gymclubapp/screens/general/home.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
@@ -133,9 +134,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 .signInWithEmailAndPassword(
                     _emailController, _passwordController)
                 .then((string) async {
-              setState(() {
-                _errorMessage = string;
-              });
+              if (string != '') {
+                setState(() {
+                  _errorMessage = string;
+                });
+              }
               // if (string == '') {
               //   Navigator.push(
               //       context,
@@ -147,9 +150,6 @@ class _SignInScreenState extends State<SignInScreen> {
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.pressed)) {
-                return Colors.black26;
-              }
               return Colors.white;
             }),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
