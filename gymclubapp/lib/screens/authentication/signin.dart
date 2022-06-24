@@ -134,22 +134,23 @@ class _SignInScreenState extends State<SignInScreen> {
       child: ElevatedButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            await signInMethod(_emailController, _passwordController)
-                .then((user) {
-              if (user != null) {
-                if (user.emailVerified) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => const HomeScreen())));
-                } else {
-                  user.sendEmailVerification();
-                  showPopUpDialog(
-                      'Account not verified. A \'Verification Email\' has been sent.',
-                      null);
-                }
-              }
-            });
+            signInMethod(_emailController, _passwordController);
+            // await signInMethod(_emailController, _passwordController)
+            //     .then((user) {
+            //   if (user != null) {
+            //     if (user.emailVerified) {
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: ((context) => const HomeScreen())));
+            //     } else {
+            //       user.sendEmailVerification();
+            //       showPopUpDialog(
+            //           'Account not verified. A \'Verification Email\' has been sent.',
+            //           null);
+            //     }
+            //   }
+            // });
           }
         },
         style: ButtonStyle(
