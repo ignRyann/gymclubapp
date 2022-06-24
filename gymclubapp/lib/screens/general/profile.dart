@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
+import 'package:gymclubapp/screens/screens.dart';
 import '../../utils/colour_utils.dart';
 import '../../utils/widgets.dart';
 import '../auth_services.dart';
@@ -22,12 +25,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       centerTitle: false,
       automaticallyImplyLeading: false,
       title: const Text(
-        'WORKOUT',
+        'PROFILE',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       ),
       actions: [
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
           child: CircleAvatar(
             backgroundColor: Colors.white,
             radius: 22,
