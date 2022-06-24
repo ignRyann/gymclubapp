@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import '../../utils/widgets.dart';
+import '../../../utils/utils.dart';
 
 class WorkoutDashboardScreen extends StatefulWidget {
   const WorkoutDashboardScreen({Key? key}) : super(key: key);
@@ -30,10 +30,12 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
+          print("Redirect to 'Start Workout' Page");
           // TODO Redirect to 'Start Workout' Page
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
+              // TODO Green or White Coloured Button?
               return Colors.green;
             }),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -42,7 +44,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
         child: const Text(
           'Start a Fresh Workout',
           style: TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
     );

@@ -2,7 +2,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gymclubapp/screens/general/home.dart';
 import 'package:gymclubapp/screens/screens.dart';
 
 class LandingScreen extends StatelessWidget {

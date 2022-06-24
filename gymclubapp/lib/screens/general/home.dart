@@ -3,8 +3,6 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:gymclubapp/screens/general/profile.dart';
-import 'package:gymclubapp/screens/general/workoutdashboard.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
@@ -17,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // State Class
-  int _page = 0;
+  int _page = 1;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   final List<Widget> _listPages = [
     FeedPage(),
@@ -29,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // [Widget] Curved Bottom Navigation Bar
     final bottomCurvedNavBar = CurvedNavigationBar(
+        index: _page,
         key: _bottomNavigationKey,
         backgroundColor: hexStringToColor("000000"),
         items: const <Widget>[
@@ -44,8 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Main Body
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      // appBar: feedAppBar,
       body: _listPages[_page],
       bottomNavigationBar: bottomCurvedNavBar,
     );
