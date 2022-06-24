@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gymclubapp/screens/screens.dart';
-
 import '../../utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,9 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ElevatedButton(
         onPressed: () {
           FirebaseAuth.instance.signOut();
-
-          // Navigator.push(context,
-          //     MaterialPageRoute(builder: ((context) => const SignInScreen())));
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
