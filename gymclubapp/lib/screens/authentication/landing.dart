@@ -14,11 +14,11 @@ class LandingScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           User? user = snapshot.data;
-          if (user == null || !user.emailVerified) {
-            return const SignInScreen();
-          } else {
+          if (user != null && user.emailVerified) {
             print("${user.email} is already logged in!");
             return const HomeScreen();
+          } else {
+            return const SignInScreen();
           }
         } else {
           return const Scaffold(

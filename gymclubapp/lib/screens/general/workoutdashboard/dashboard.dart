@@ -27,7 +27,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
     // [Widget] Start Workout Elevated Button
     final startFreshWorkout = Container(
       width: MediaQuery.of(context).size.width,
-      height: 50,
+      height: 40,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
@@ -97,6 +97,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                       thickness: 2.0,
                     ),
                     templateEditor,
+                    const SizedBox(height: 10),
                     const Template(),
                   ],
                 ))),

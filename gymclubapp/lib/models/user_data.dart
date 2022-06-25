@@ -13,7 +13,7 @@ class UserData {
   final String? instagram;
   final String? snapchat;
   final String? tiktok;
-  Map<String, TemplateGroups>? templateGroups;
+  Map<String, TemplateGroup>? templateGroups;
 
   UserData({
     required this.email,
