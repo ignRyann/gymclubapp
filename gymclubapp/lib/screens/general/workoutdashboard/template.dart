@@ -34,7 +34,7 @@ class _TemplateState extends State<Template> {
               Text(
                 'PUSH',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.pink,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
