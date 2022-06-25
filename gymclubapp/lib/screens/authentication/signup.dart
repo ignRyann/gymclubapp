@@ -219,16 +219,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         builder: (((context) => const SignInScreen()))));
               }
             });
-            // signUpMethod(
-            //         _usernameController, _emailController, _passwordController)
-            //     .then((accountCreated) {
-            //   if (accountCreated) {
-            //     showPopUpDialog(
-            //         'An Email Verification has been sent!',
-            //         MaterialPageRoute(
-            //             builder: (((context) => const SignInScreen()))));
-            //   }
-            // });
           }
         },
         style: ButtonStyle(
@@ -246,6 +236,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
 
+    // Main Body
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(

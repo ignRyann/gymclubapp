@@ -49,6 +49,32 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       ),
     );
 
+    // [Widget] Template Editor Row
+    final templateEditor = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () {
+            print("Add Template");
+          },
+          icon: const Icon(
+            Icons.add_circle_outline,
+            color: Colors.white,
+            size: 40.0,
+          ),
+        ),
+        IconButton(
+            onPressed: () {
+              print("ReOrder Templates");
+            },
+            icon: const Icon(
+              Icons.layers_rounded,
+              color: Colors.white,
+              size: 40.0,
+            )),
+      ],
+    );
+
     // Main Body
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -70,6 +96,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                       color: Colors.white,
                       thickness: 2.0,
                     ),
+                    templateEditor,
                     const Template(),
                   ],
                 ))),

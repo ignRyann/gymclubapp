@@ -8,12 +8,7 @@ class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
 
-  // Retrieve User if set, otherwise null
-  // Might have to be async + Future<User?>
-  Future<User?> getUser() async {
-    return auth.currentUser;
-  }
-
+  // Checks if Username is Available
   Future<bool> usernameAvailable(String username) async {
     if (username.length < 5) {
       return false;

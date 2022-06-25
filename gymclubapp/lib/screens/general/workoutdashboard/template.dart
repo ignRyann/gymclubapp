@@ -58,7 +58,7 @@ class _TemplateState extends State<Template> {
 
     // [Widget] Template Column
     final template = Container(
-        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -78,7 +78,7 @@ class _TemplateState extends State<Template> {
                   },
                   icon: const Icon(
                     Icons.edit,
-                    color: Colors.white,
+                    color: Colors.yellow,
                   ),
                 )
               ],
@@ -91,9 +91,10 @@ class _TemplateState extends State<Template> {
 
     // Main Body
     return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [template, template],
-        ));
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: <Widget>[template, template],
+      ),
+    );
   }
 }
