@@ -14,12 +14,16 @@ class AuthService {
       return false;
     }
 
-    final query = await db
-        .collection("users")
-        .where("username", isEqualTo: username)
-        .get();
+    final query = await db.collection("users").get();
 
-    return query.docs.isEmpty;
+    for (dynamic documentSnapshot in query.docs) {
+      String docUsername = documentSnapshot['username'];
+      if (docUsername.toLowerCase() == username.toLowerCase()) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   // Create User with Email & Password

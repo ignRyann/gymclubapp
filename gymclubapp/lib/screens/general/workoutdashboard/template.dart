@@ -103,10 +103,13 @@ class _TemplateState extends State<Template> {
   // [Function] Retrieve TemplateGroup layout
   Container templateGroup(List<TemplateGroup> data, int index) {
     final templateGroupData = data[index];
+    // [Widget] WorkoutTemplate List<Widget>
     List<Widget> workoutTemplateWidgets = [];
     for (int i = 0; i < templateGroupData.templateGroupItems.length; i++) {
       workoutTemplateWidgets.add(workout(templateGroupData, i));
     }
+
+    // Main Body
     return Container(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
         child: Column(
@@ -151,7 +154,7 @@ class _TemplateState extends State<Template> {
       child: ElevatedButton(
           onPressed: () {
             print(
-                "Redirect to ${templateGroup.templateGroupName}/${templateGroup.templateGroupItems[index].templateName} Template");
+                "Redirect to (${templateGroup.templateGroupName}) Group (${templateGroup.templateGroupItems[index].templateName}) Template");
             // TODO Redirect to 'Specific Workout' Page
           },
           style: ButtonStyle(
