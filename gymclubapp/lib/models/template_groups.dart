@@ -1,17 +1,17 @@
 import 'package:gymclubapp/models/models.dart';
 
 class TemplateGroup {
-  String templateGroupName;
-  String templateGroupDescription;
-  List<WorkoutTemplate> templateGroupItems;
+  String name;
+  String description;
+  List<WorkoutTemplate> items;
 
   TemplateGroup({
-    required this.templateGroupName,
-    required this.templateGroupDescription,
-    required this.templateGroupItems,
+    required this.name,
+    required this.description,
+    required this.items,
   });
 
   void addTemplate(WorkoutTemplate template) {
-    templateGroupItems.add(template);
+    items.add(template);
   }
 }

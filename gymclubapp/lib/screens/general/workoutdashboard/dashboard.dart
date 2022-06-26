@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:gymclubapp/screens/general/workoutdashboard/addtemplategroup.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/template.dart';
 import '../../../utils/utils.dart';
 
@@ -16,6 +17,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
   Widget build(BuildContext context) {
     // [Widget] WorkoutDashboard AppBar
     final workoutDashboardAppBar = AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.black,
       elevation: 0.0,
       title: const Text(
@@ -55,11 +57,14 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       children: [
         IconButton(
           onPressed: () {
-            print("Add Template");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddTemplateGroup()));
           },
           icon: const Icon(
             Icons.add_circle_outline,
-            color: Colors.white,
+            color: Colors.green,
             size: 40.0,
           ),
         ),
@@ -69,7 +74,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
             },
             icon: const Icon(
               Icons.layers_rounded,
-              color: Colors.white,
+              color: Colors.blue,
               size: 40.0,
             )),
       ],

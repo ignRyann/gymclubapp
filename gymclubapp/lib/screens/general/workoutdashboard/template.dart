@@ -14,9 +14,9 @@ class _TemplateState extends State<Template> {
   // Dummy Data
   final dummyData = [
     TemplateGroup(
-        templateGroupName: "Push/Pull/Legs",
-        templateGroupDescription: "To be performed at GymBox",
-        templateGroupItems: [
+        name: "Push/Pull/Legs",
+        description: "To be performed at GymBox",
+        items: [
           WorkoutTemplate(
             templateName: "Push",
             templateDescription: "Concentrate on Eccentric",
@@ -55,9 +55,9 @@ class _TemplateState extends State<Template> {
           ),
         ]),
     TemplateGroup(
-        templateGroupName: "Upper/Lower",
-        templateGroupDescription: "To be performed at PureGym TCR",
-        templateGroupItems: [
+        name: "Upper/Lower",
+        description: "To be performed at PureGym TCR",
+        items: [
           WorkoutTemplate(
             templateName: "Upper",
             templateDescription: "Full ROM + Good Tempo",
@@ -105,7 +105,7 @@ class _TemplateState extends State<Template> {
     final templateGroupData = data[index];
     // [Widget] WorkoutTemplate List<Widget>
     List<Widget> workoutTemplateWidgets = [];
-    for (int i = 0; i < templateGroupData.templateGroupItems.length; i++) {
+    for (int i = 0; i < templateGroupData.items.length; i++) {
       workoutTemplateWidgets.add(workout(templateGroupData, i));
     }
 
@@ -119,7 +119,7 @@ class _TemplateState extends State<Template> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  templateGroupData.templateGroupName,
+                  templateGroupData.name,
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -146,7 +146,7 @@ class _TemplateState extends State<Template> {
 
   // [Function] Retrieve Workout Layout
   Container workout(TemplateGroup templateGroup, int index) {
-    final workoutTemplate = templateGroup.templateGroupItems[index];
+    final workoutTemplate = templateGroup.items[index];
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
       width: MediaQuery.of(context).size.width,
@@ -154,7 +154,7 @@ class _TemplateState extends State<Template> {
       child: ElevatedButton(
           onPressed: () {
             print(
-                "Redirect to (${templateGroup.templateGroupName}) Group (${templateGroup.templateGroupItems[index].templateName}) Template");
+                "Redirect to (${templateGroup.name}) Group (${templateGroup.items[index].templateName}) Template");
             // TODO Redirect to 'Specific Workout' Page
           },
           style: ButtonStyle(
