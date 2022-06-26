@@ -35,7 +35,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       child: ElevatedButton(
         onPressed: () {
           print("Redirect to 'Start Workout' Page");
-          TemplateService().getTemplateNames('PPL Split');
+          TemplateService().getData();
           // TODO Redirect to 'Start Workout' Page
         },
         style: ButtonStyle(
@@ -105,7 +105,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                     ),
                     templateEditor,
                     const SizedBox(height: 10),
-                    const Template(),
+                    const TemplateBuilder(),
                   ],
                 ))),
       ),

@@ -1,24 +1,25 @@
 import 'package:gymclubapp/models/exercises.dart';
 
-class WorkoutTemplate {
-  String templateName;
-  String templateDescription;
-  List<Exercise> templateExercises;
+class Template {
+  String name;
+  String description;
+  int exerciseCount;
+  List<Exercise> exercises = [];
 
-  WorkoutTemplate({
-    required this.templateName,
-    required this.templateDescription,
-    required this.templateExercises,
+  Template({
+    required this.name,
+    required this.description,
+    required this.exerciseCount,
   });
 
   void addExercise(Exercise exercise) {
-    templateExercises.add(exercise);
+    exercises.add(exercise);
   }
 
   void removeExercise(String exerciseName) {
-    for (Exercise exercise in templateExercises) {
+    for (Exercise exercise in exercises) {
       if (exercise.name == exerciseName) {
-        templateExercises.remove(exercise);
+        exercises.remove(exercise);
         break;
       }
     }

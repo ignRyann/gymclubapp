@@ -3,87 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
 
-class Template extends StatefulWidget {
-  const Template({Key? key}) : super(key: key);
+class TemplateBuilder extends StatefulWidget {
+  const TemplateBuilder({Key? key}) : super(key: key);
 
   @override
-  State<Template> createState() => _TemplateState();
+  State<TemplateBuilder> createState() => _TemplateBuilderState();
 }
 
-class _TemplateState extends State<Template> {
+class _TemplateBuilderState extends State<TemplateBuilder> {
   // Dummy Data
-  final dummyData = [
-    TemplateGroup(
-        name: "Push/Pull/Legs",
-        description: "To be performed at GymBox",
-        items: [
-          WorkoutTemplate(
-            templateName: "Push",
-            templateDescription: "Concentrate on Eccentric",
-            templateExercises: [
-              Exercise(
-                  name: "Dumbell Press",
-                  category: "Freeweights",
-                  note: "Control Range of Motion",
-                  sets: [9, 15, 15],
-                  weights: [32, 28, 28]),
-            ],
-          ),
-          WorkoutTemplate(
-            templateName: "Pull",
-            templateDescription: "Focus on pulling with elbows",
-            templateExercises: [
-              Exercise(
-                  name: "Deadlift",
-                  category: "Freeweights",
-                  note: "Control Range of Motion",
-                  sets: [5, 5, 5],
-                  weights: [100, 100, 100]),
-            ],
-          ),
-          WorkoutTemplate(
-            templateName: "Legs",
-            templateDescription: "Slow Eccentric, Quick Concentric",
-            templateExercises: [
-              Exercise(
-                  name: "Squat",
-                  category: "Freeweights",
-                  note: "Control Range of Motion",
-                  sets: [9, 15],
-                  weights: [100, 150]),
-            ],
-          ),
-        ]),
-    TemplateGroup(
-        name: "Upper/Lower",
-        description: "To be performed at PureGym TCR",
-        items: [
-          WorkoutTemplate(
-            templateName: "Upper",
-            templateDescription: "Full ROM + Good Tempo",
-            templateExercises: [
-              Exercise(
-                  name: "Dumbell Press",
-                  category: "Freeweights",
-                  note: "Control Range of Motion",
-                  sets: [9, 15, 15],
-                  weights: [32, 28, 28]),
-            ],
-          ),
-          WorkoutTemplate(
-            templateName: "Lower",
-            templateDescription: "Ensure Good Form",
-            templateExercises: [
-              Exercise(
-                  name: "Squat",
-                  category: "Freeweights",
-                  note: "Control Range of Motion",
-                  sets: [9, 15],
-                  weights: [100, 150]),
-            ],
-          ),
-        ]),
-  ];
+  final dummyData = [];
 
   @override
   Widget build(BuildContext context) {
@@ -92,11 +21,11 @@ class _TemplateState extends State<Template> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.62,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: ListView.builder(
-          itemCount: dummyData.length,
-          itemBuilder: (BuildContext context, int index) {
-            return templateGroup(dummyData, index);
-          }),
+      // child: ListView.builder(
+      //     itemCount: dummyData.length,
+      //     itemBuilder: (BuildContext context, int index) {
+      //       return templateGroup(dummyData, index);
+      //     }),
     );
   }
 
@@ -105,7 +34,7 @@ class _TemplateState extends State<Template> {
     final templateGroupData = data[index];
     // [Widget] WorkoutTemplate List<Widget>
     List<Widget> workoutTemplateWidgets = [];
-    for (int i = 0; i < templateGroupData.items.length; i++) {
+    for (int i = 0; i < templateGroupData.templates.length; i++) {
       workoutTemplateWidgets.add(workout(templateGroupData, i));
     }
 
@@ -146,7 +75,7 @@ class _TemplateState extends State<Template> {
 
   // [Function] Retrieve Workout Layout
   Container workout(TemplateGroup templateGroup, int index) {
-    final workoutTemplate = templateGroup.items[index];
+    final workoutTemplate = templateGroup.templates[index];
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
       width: MediaQuery.of(context).size.width,
@@ -154,7 +83,7 @@ class _TemplateState extends State<Template> {
       child: ElevatedButton(
           onPressed: () {
             print(
-                "Redirect to (${templateGroup.name}) Group (${templateGroup.items[index].templateName}) Template");
+                "Redirect to (${templateGroup.name}) Group (${templateGroup.templates[index].name}) Template");
             // TODO Redirect to 'Specific Workout' Page
           },
           style: ButtonStyle(
@@ -167,7 +96,7 @@ class _TemplateState extends State<Template> {
             children: [
               const SizedBox(height: 10),
               Text(
-                workoutTemplate.templateName,
+                workoutTemplate.name,
                 style: const TextStyle(
                   color: Colors.pink,
                   fontWeight: FontWeight.bold,
@@ -179,7 +108,7 @@ class _TemplateState extends State<Template> {
                 color: Colors.black,
               ),
               Text(
-                workoutTemplate.templateDescription,
+                workoutTemplate.description,
                 style: const TextStyle(
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
