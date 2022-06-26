@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/general/home.dart';
+import 'package:gymclubapp/services/template_services.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class AddTemplateGroup extends StatefulWidget {
@@ -16,6 +17,9 @@ class _AddTemplateGroupState extends State<AddTemplateGroup> {
   // Controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+
+  // Error Messages
+  bool _groupNameAvailable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +40,30 @@ class _AddTemplateGroupState extends State<AddTemplateGroup> {
       autocorrect: true,
       autofocus: false,
       cursorColor: Colors.white,
+      onChanged: (text) async {
+        final groupNameAvailable =
+            await TemplateService().groupNameAvailable(text);
+        setState(() {
+          _groupNameAvailable = groupNameAvailable;
+        });
+      },
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
       decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.dashboard,
             color: Colors.white70,
           ),
+          suffixIcon: _groupNameAvailable
+              ? const Icon(
+                  Icons.check_outlined,
+                  color: Colors.green,
+                  size: 30.0,
+                )
+              : const Icon(
+                  Icons.cancel_outlined,
+                  color: Colors.red,
+                  size: 30.0,
+                ),
           labelText: 'Enter Group Name',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
@@ -84,8 +106,10 @@ class _AddTemplateGroupState extends State<AddTemplateGroup> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () async {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+          if (_templateKey.currentState!.validate() && _groupNameAvailable) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
+          }
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -112,18 +136,20 @@ class _AddTemplateGroupState extends State<AddTemplateGroup> {
         height: MediaQuery.of(context).size.height * 0.9,
         decoration: BoxDecoration(gradient: gradientDesign()),
         child: SingleChildScrollView(
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.05, 20, 40),
-                child: Column(
-                  children: <Widget>[
-                    name,
-                    const SizedBox(height: 20),
-                    description,
-                    const SizedBox(height: 20),
-                    createTemplateButton
-                  ],
-                ))),
+            child: Form(
+                key: _templateKey,
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        20, MediaQuery.of(context).size.height * 0.05, 20, 40),
+                    child: Column(
+                      children: <Widget>[
+                        name,
+                        const SizedBox(height: 20),
+                        description,
+                        const SizedBox(height: 20),
+                        createTemplateButton
+                      ],
+                    )))),
       ),
     );
   }

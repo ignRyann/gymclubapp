@@ -204,7 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () async {
-          if (_formKey.currentState!.validate()) {
+          if (_formKey.currentState!.validate() && _usernameAvailable) {
             await AuthService()
                 .createUserWithEmailAndPassword(
                     _usernameController, _emailController, _passwordController)
