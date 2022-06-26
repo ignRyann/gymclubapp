@@ -138,12 +138,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   _errorMessage = string;
                 });
               }
-              // if (string == '') {
-              //   Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) => const HomeScreen()));
-              // }
             });
           }
         },

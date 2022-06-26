@@ -21,16 +21,16 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.62,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      // child: ListView.builder(
-      //     itemCount: dummyData.length,
-      //     itemBuilder: (BuildContext context, int index) {
-      //       return templateGroup(dummyData, index);
-      //     }),
+      child: ListView.builder(
+          itemCount: dummyData.length,
+          itemBuilder: (BuildContext context, int index) {
+            return templateGroup(dummyData, index);
+          }),
     );
   }
 
   // [Function] Retrieve TemplateGroup layout
-  Container templateGroup(List<TemplateGroup> data, int index) {
+  Container templateGroup(List data, int index) {
     final templateGroupData = data[index];
     // [Widget] WorkoutTemplate List<Widget>
     List<Widget> workoutTemplateWidgets = [];

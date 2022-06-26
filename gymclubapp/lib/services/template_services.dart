@@ -30,7 +30,7 @@ class TemplateService {
     return true;
   }
 
-  Future<void> getData() async {
+  Future<List> getData() async {
     List<TemplateGroup> data = [];
     User? user = auth.currentUser;
     if (user != null) {
@@ -89,16 +89,14 @@ class TemplateService {
             );
             // Adding Exercise() object to Template.exercises
             template.addExercise(exercise);
-            print(
-                "${templateGroup.name} / ${template.name} / ${exercise.name}");
           }
           // Adding Template() object to templateGroup.templates
           templateGroup.addTemplate(template);
         }
+        data.add(templateGroup);
       }
-    } else {
-      print("User is null");
     }
+    return data;
   }
 
   Future<void> getTemplateNames(String groupName) async {
@@ -111,16 +109,6 @@ class TemplateService {
           .collection("templateGroups")
           .where('name', isEqualTo: groupName)
           .get();
-
-      // // Retrieves Template Collection
-      // final templateSnapshots = await templateGroupSnapshot.docs[0].reference
-      //     .collection("templates")
-      //     .get();
-
-      // // Retrieves & Stores Template Names
-      // for (dynamic templateSnapshot in templateSnapshots.docs) {
-      //   print(templateSnapshot['name']);
-      // }
       for (dynamic querySnapshot in templateGroupSnapshot.docs) {
         final templateNames = querySnapshot['templateNames'];
         for (String templateName in templateNames) {
