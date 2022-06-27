@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/addtemplategroup.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/templatebuilder.dart';
-import 'package:gymclubapp/services/template_services.dart';
 import '../../../utils/utils.dart';
 
 class WorkoutDashboardScreen extends StatefulWidget {
@@ -35,7 +34,6 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       child: ElevatedButton(
         onPressed: () {
           print("Redirect to 'Start Workout' Page");
-          TemplateService().getData();
           // TODO Redirect to 'Start Workout' Page
         },
         style: ButtonStyle(
@@ -82,7 +80,6 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
 
     // Main Body
     return Scaffold(
-      extendBodyBehindAppBar: false,
       appBar: workoutDashboardAppBar,
       backgroundColor: Colors.black,
       body: Container(

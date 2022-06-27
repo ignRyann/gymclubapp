@@ -35,7 +35,12 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
           ? ListView.builder(
               itemCount: _data.length,
               itemBuilder: (BuildContext context, int index) {
-                return templateGroup(_data, index);
+                return Column(children: [
+                  templateGroup(_data, index),
+                  const SizedBox(
+                    height: 20,
+                  )
+                ]);
               })
           : const Scaffold(
               backgroundColor: Colors.transparent,
@@ -61,13 +66,17 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
   Container templateGroup(List data, int index) {
     TemplateGroup templateGroupData = data[index];
     // [Widget] WorkoutTemplate List<Widget>
-    List<Widget> workoutTemplateWidgets = [];
+    List<Widget> templateWidgets = [];
     for (int i = 0; i < templateGroupData.templates.length; i++) {
-      workoutTemplateWidgets.add(workoutLayout(templateGroupData, i));
+      templateWidgets.add(workoutLayout(templateGroupData, i));
     }
 
     return Container(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 50),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black26,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -129,10 +138,6 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                 ]),
               ],
             ),
-            // const Divider(
-            //   thickness: 2,
-            //   color: Colors.white30,
-            // ),
             if (templateGroupData.description.isNotEmpty)
               Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -144,7 +149,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                         : templateGroupData.description,
                     maxLines: 1,
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Colors.amber,
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
@@ -152,9 +157,10 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
             const SizedBox(
               height: 10,
             ),
-            Column(
-              children: workoutTemplateWidgets,
-            )
+            SlidableAutoCloseBehavior(
+                child: Column(
+              children: templateWidgets,
+            ))
           ],
         ));
   }
@@ -164,6 +170,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
     final Template workoutTemplate = templateGroup.templates[index];
 
     return Slidable(
+        groupTag: templateGroup.docID,
         // Left Side Actions
         startActionPane: ActionPane(
           motion: const DrawerMotion(),
@@ -193,7 +200,8 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
             SlidableAction(
               backgroundColor: Colors.transparent,
               foregroundColor: Colors.green,
-              icon: Icons.add_circle,
+              icon: Icons.forward,
+              label: "START",
               onPressed: (BuildContext context) {
                 print("${workoutTemplate.name} Start button has been pressed");
               },
@@ -212,7 +220,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                   end: Alignment.centerRight,
                   colors: [
                     Colors.transparent,
-                    Colors.black38,
+                    Colors.black54,
                     Colors.transparent
                   ]),
               // color: Colors.black38,
@@ -228,60 +236,5 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                 fontSize: 18,
               ),
             )));
-  }
-
-  // [Function] Retrieve Workout Layout
-  Container workout(TemplateGroup templateGroup, int index) {
-    final workoutTemplate = templateGroup.templates[index];
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-      child: ElevatedButton(
-          onPressed: () {
-            print(
-                "Redirect to (${templateGroup.name}) Group (${templateGroup.templates[index].name}) Template");
-            // TODO Redirect to 'Specific Workout' Page
-            // https://pub.dev/packages/popover
-            // Pop Over introducing 'Edit' & 'Start' Button
-            // https://pub.dev/packages/flutter_slidable
-            // Slidable Action List
-          },
-          style: ButtonStyle(
-              overlayColor: MaterialStateProperty.all(Colors.grey),
-              backgroundColor: MaterialStateProperty.all(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)))),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Text(
-                workoutTemplate.name,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              const Divider(
-                thickness: 2,
-                color: Colors.black,
-              ),
-              if (workoutTemplate.description.isNotEmpty)
-                Text(
-                  workoutTemplate.description.length > 50
-                      ? "${workoutTemplate.description.substring(0, 50)}.."
-                      : workoutTemplate.description,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              const SizedBox(height: 10),
-            ],
-          )),
-    );
   }
 }

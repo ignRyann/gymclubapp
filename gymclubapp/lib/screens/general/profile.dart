@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import '../../utils/widgets.dart';
 import '../../services/auth_services.dart';
@@ -16,33 +17,27 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    // [Widget] AppBar
-    final feedAppBar = AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0.0,
-      centerTitle: false,
+    // [Widget] Profile App Bar
+    final profileAppBar = AppBar(
       automaticallyImplyLeading: false,
+      backgroundColor: Colors.black,
+      elevation: 0.0,
       title: const Text(
         'PROFILE',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 22,
-            child: IconButton(
-                onPressed: (() {
-                  print("Notifications Button Pressed");
-                }),
-                icon: const Icon(
-                  Icons.notifications,
-                  color: Colors.black87,
-                  size: 25,
-                )),
-          ),
-        ),
+        IconButton(
+            splashRadius: 20,
+            onPressed: () {
+              // TODO Create Profile Settings
+              print("Profile Settings has been pressed.");
+            },
+            icon: const Icon(
+              Icons.settings,
+              size: 30,
+              color: Colors.white,
+            ))
       ],
     );
 
@@ -74,27 +69,50 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
 
+    // [Widget] Profile Picture
+    final profilePicture = Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.3,
+          vertical: MediaQuery.of(context).size.width * 0.05),
+      child: ClipOval(
+        child: Image.network(
+            'https://cdn.pixabay.com/photo/2020/11/04/07/52/pumpkin-5711688_960_720.jpg'),
+      ),
+    );
+
+    // [Widget] Tab Bar DefaultTabController
+    final tabBar = DefaultTabController(
+        initialIndex: 0,
+        length: 2,
+        child: TabBar(
+          tabs: const [
+            Tab(
+              text: "Profile",
+            ),
+            Tab(
+              text: "Logs",
+            ),
+          ],
+          labelColor: Colors.white,
+          indicator: MaterialIndicator(
+            horizontalPadding: MediaQuery.of(context).size.width * 0.1,
+            color: Colors.white,
+            paintingStyle: PaintingStyle.fill,
+          ),
+        ));
+
+    // Main Body
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: feedAppBar,
+      appBar: profileAppBar,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(gradient: gradientDesign()),
         child: SingleChildScrollView(
             child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.1, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(
-                  children: <Widget>[
-                    // logoWidget("images/dumbell.png", 120, 120),
-                    const Divider(
-                      color: Colors.white,
-                      thickness: 1.5,
-                    ),
-                    const SizedBox(height: 120),
-                    signOut,
-                  ],
+                  children: <Widget>[profilePicture, signOut, tabBar],
                 ))),
       ),
     );
