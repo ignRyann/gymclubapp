@@ -75,7 +75,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
               print("ReOrder Templates");
             },
             icon: const Icon(
-              Icons.layers_rounded,
+              Icons.layers_clear,
               color: Colors.blue,
               size: 40.0,
             )),
