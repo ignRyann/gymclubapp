@@ -31,7 +31,7 @@ class TemplateService {
     return true;
   }
 
-  // [Function] Retrieves a user's data ()
+  // [Function] Retrieves a user's data
   Future<List> getData() async {
     List<TemplateGroup> data = [];
     User? user = auth.currentUser;
@@ -100,5 +100,10 @@ class TemplateService {
       }
     }
     return data;
+  }
+
+  // [Function] Create Template Group
+  bool createTemplateGroup(String name, String description) {
+    return false;
   }
 }
