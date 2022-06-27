@@ -57,29 +57,6 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
     });
   }
 
-  //  [Function] Retrieve TemplateGroup Description Container
-  Container templateGroupDescription(String description) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 40,
-      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(90), color: Colors.orangeAccent),
-      alignment: Alignment.center,
-      child: Text(
-        description.length > 50
-            ? "${description.substring(0, 50)}.."
-            : description,
-        maxLines: 1,
-        style: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 14,
-        ),
-      ),
-    );
-  }
-
   // [Function] Retrieve TemplateGroup layout
   Container templateGroup(List data, int index) {
     TemplateGroup templateGroupData = data[index];
@@ -152,27 +129,26 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                 ]),
               ],
             ),
-            const Divider(
-              thickness: 2,
-              color: Colors.white30,
-            ),
+            // const Divider(
+            //   thickness: 2,
+            //   color: Colors.white30,
+            // ),
             if (templateGroupData.description.isNotEmpty)
-              templateGroupDescription(templateGroupData.description),
-            // Container(
-            //     padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            //     width: MediaQuery.of(context).size.width,
-            //     alignment: Alignment.center,
-            //     child: Text(
-            //       templateGroupData.description.length > 50
-            //           ? "${templateGroupData.description.substring(0, 50)}.."
-            //           : templateGroupData.description,
-            //       maxLines: 1,
-            //       style: const TextStyle(
-            //         color: Colors.amber,
-            //         fontWeight: FontWeight.bold,
-            //         fontSize: 12,
-            //       ),
-            //     )),
+              Container(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: Text(
+                    templateGroupData.description.length > 50
+                        ? "${templateGroupData.description.substring(0, 50)}.."
+                        : templateGroupData.description,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  )),
             const SizedBox(
               height: 10,
             ),
