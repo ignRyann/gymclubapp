@@ -65,7 +65,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                     builder: (context) => const AddTemplateGroupScreen()));
           },
           icon: const Icon(
-            Icons.add_circle_outline,
+            Icons.add_to_photos_rounded,
             color: Colors.green,
             size: 40.0,
           ),

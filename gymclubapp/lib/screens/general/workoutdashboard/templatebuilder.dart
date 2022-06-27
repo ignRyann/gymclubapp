@@ -168,6 +168,10 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
             print(
                 "Redirect to (${templateGroup.name}) Group (${templateGroup.templates[index].name}) Template");
             // TODO Redirect to 'Specific Workout' Page
+            // https://pub.dev/packages/popover
+            // Pop Over introducing 'Edit' & 'Start' Button
+            // https://pub.dev/packages/flutter_slidable
+            // Slidable Action List
           },
           style: ButtonStyle(
               overlayColor: MaterialStateProperty.all(Colors.grey),
@@ -183,21 +187,24 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                 style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 18,
                 ),
               ),
               const Divider(
                 thickness: 2,
                 color: Colors.black,
               ),
-              Text(
-                workoutTemplate.description,
-                style: const TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
+              if (workoutTemplate.description.isNotEmpty)
+                Text(
+                  workoutTemplate.description.length > 50
+                      ? "${workoutTemplate.description.substring(0, 50)}.."
+                      : workoutTemplate.description,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
                 ),
-              ),
               const SizedBox(height: 10),
             ],
           )),
