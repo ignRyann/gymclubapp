@@ -103,7 +103,52 @@ class TemplateService {
   }
 
   // [Function] Create Template Group
-  bool createTemplateGroup(String name, String description) {
+  Future<bool> createTemplateGroup(String name, String description) async {
+    User? user = auth.currentUser;
+    if (user != null) {
+      Map<String, dynamic> templateGroup = {
+        "name": name,
+        "description": description,
+        "templateNames": [],
+      };
+      await db
+          .collection("users")
+          .doc(user.uid)
+          .collection("templateGroups")
+          .add(templateGroup)
+          .then((documentSnapshot) {
+        print("Added Data with ID: ${documentSnapshot.id}");
+      });
+
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> removeTemplateGroup(String templateGroupName) async {
+    User? user = auth.currentUser;
+    if (user != null) {
+      await db
+          .collection("users")
+          .doc(user.uid)
+          .collection("templateGroups")
+          .where("name", isEqualTo: templateGroupName)
+          .get()
+          .then((querySnapshots) async {
+        for (var querySnapshot in querySnapshots.docs) {
+          // Printing each document's ID
+          // print("${templateGroupName} has an ID of: ${querySnapshot.id}");
+          await db
+              .collection("users")
+              .doc(user.uid)
+              .collection("templateGroups")
+              .doc(querySnapshot.id)
+              .delete();
+        }
+        return true;
+      });
+    }
+
     return false;
   }
 }

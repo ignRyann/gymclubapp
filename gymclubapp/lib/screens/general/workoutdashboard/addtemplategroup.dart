@@ -115,8 +115,15 @@ class _AddTemplateGroupState extends State<AddTemplateGroup> {
       child: ElevatedButton(
         onPressed: () async {
           if (_templateKey.currentState!.validate() && _groupNameAvailable) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()));
+            await TemplateService()
+                .createTemplateGroup(
+                    _nameController.text, _descriptionController.text)
+                .then((value) {
+              value ? "Added Template Group" : "Error adding Template Group";
+            }).then((value) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+            });
           }
         },
         style: ButtonStyle(

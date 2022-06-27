@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
+import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/services/template_services.dart';
 
 class TemplateBuilder extends StatefulWidget {
@@ -95,6 +96,14 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                     onPressed: () {
                       print(
                           "${templateGroupData.name} Delete Button has been pressed.");
+                      TemplateService()
+                          .removeTemplateGroup(templateGroupData.name)
+                          .then((isDeleted) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (((context) => const HomeScreen()))));
+                      });
                     },
                     icon: const Icon(
                       Icons.delete,
@@ -111,9 +120,6 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
             Container(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 width: MediaQuery.of(context).size.width,
-                // decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(100),
-                //     color: Colors.amber),
                 alignment: Alignment.center,
                 child: Text(
                   templateGroupData.description.length > 50
