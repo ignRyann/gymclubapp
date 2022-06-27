@@ -133,21 +133,22 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
               thickness: 2,
               color: Colors.white30,
             ),
-            Container(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-                child: Text(
-                  templateGroupData.description.length > 50
-                      ? "${templateGroupData.description.substring(0, 50)}.."
-                      : templateGroupData.description,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    color: Colors.amber,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                )),
+            if (templateGroupData.description.isNotEmpty)
+              Container(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: Text(
+                    templateGroupData.description.length > 50
+                        ? "${templateGroupData.description.substring(0, 50)}.."
+                        : templateGroupData.description,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Colors.amber,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  )),
             Column(
               children: workoutTemplateWidgets,
             )
