@@ -35,6 +35,14 @@ class _AddTemplateGroupState extends State<AddTemplateGroup> {
 
     // [Widget] Template Group Name TextFormField
     final name = TextFormField(
+      validator: ((value) {
+        if (value != null) {
+          if (value.isEmpty || value.length < 3 || value.length > 30) {
+            return 'Group Name must be between 3 & 20 characters.';
+          }
+        }
+        return null;
+      }),
       controller: _nameController,
       enableSuggestions: false,
       autocorrect: true,

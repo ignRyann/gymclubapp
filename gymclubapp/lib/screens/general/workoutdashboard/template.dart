@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
+import 'package:gymclubapp/services/template_services.dart';
 
 class TemplateBuilder extends StatefulWidget {
   const TemplateBuilder({Key? key}) : super(key: key);
@@ -11,8 +12,21 @@ class TemplateBuilder extends StatefulWidget {
 }
 
 class _TemplateBuilderState extends State<TemplateBuilder> {
-  // Dummy Data
-  final dummyData = [];
+  // User Data (Templates)
+  late List _data;
+  bool _loaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +35,35 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.62,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: ListView.builder(
-          itemCount: dummyData.length,
-          itemBuilder: (BuildContext context, int index) {
-            return templateGroup(dummyData, index);
-          }),
+      child: _loaded
+          ? ListView.builder(
+              itemCount: _data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return templateGroup(_data, index);
+              })
+          : const Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+            ),
     );
+  }
+
+  // [Function] Retrieve User Data
+  void getData() async {
+    _data = await TemplateService().getData();
+    if (!mounted) return;
+    setState(() {
+      _loaded = true;
+    });
   }
 
   // [Function] Retrieve TemplateGroup layout
   Container templateGroup(List data, int index) {
-    final templateGroupData = data[index];
+    TemplateGroup templateGroupData = data[index];
     // [Widget] WorkoutTemplate List<Widget>
     List<Widget> workoutTemplateWidgets = [];
     for (int i = 0; i < templateGroupData.templates.length; i++) {
@@ -66,6 +98,28 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                 )
               ],
             ),
+            const Divider(
+              thickness: 2,
+              color: Colors.white30,
+            ),
+            Container(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                width: MediaQuery.of(context).size.width,
+                // decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(100),
+                //     color: Colors.amber),
+                alignment: Alignment.center,
+                child: Text(
+                  templateGroupData.description.length > 50
+                      ? "${templateGroupData.description.substring(0, 50)}.."
+                      : templateGroupData.description,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    color: Colors.amber,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                )),
             Column(
               children: workoutTemplateWidgets,
             )
@@ -98,7 +152,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
               Text(
                 workoutTemplate.name,
                 style: const TextStyle(
-                  color: Colors.pink,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -115,7 +169,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                   fontSize: 12,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
             ],
           )),
     );

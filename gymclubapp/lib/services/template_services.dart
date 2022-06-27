@@ -8,16 +8,17 @@ class TemplateService {
   final db = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
 
+  // [Function] Checks if a Template Group Name is avilable
   Future<bool> groupNameAvailable(String name) async {
     User? user = auth.currentUser;
-    if (name.length < 3 || user == null) {
+    if (name.length < 3 || user == null || name.length > 30) {
       return false;
     }
 
     final query = await db
         .collection("users")
         .doc(user.uid)
-        .collection("templates")
+        .collection("templateGroups")
         .get();
 
     for (dynamic documentSnapshot in query.docs) {
@@ -30,6 +31,7 @@ class TemplateService {
     return true;
   }
 
+  // [Function] Retrieves a user's data ()
   Future<List> getData() async {
     List<TemplateGroup> data = [];
     User? user = auth.currentUser;
@@ -39,6 +41,7 @@ class TemplateService {
           .collection("users")
           .doc(user.uid)
           .collection("templateGroups")
+          .orderBy('name')
           .get();
 
       // Iterate through each document in 'templateGroups' Collection
@@ -97,30 +100,5 @@ class TemplateService {
       }
     }
     return data;
-  }
-
-  Future<void> getTemplateNames(String groupName) async {
-    User? user = auth.currentUser;
-    if (user != null) {
-      // Retrieves TemplateGroup Collection
-      final templateGroupSnapshot = await db
-          .collection("users")
-          .doc(user.uid)
-          .collection("templateGroups")
-          .where('name', isEqualTo: groupName)
-          .get();
-      for (dynamic querySnapshot in templateGroupSnapshot.docs) {
-        final templateNames = querySnapshot['templateNames'];
-        for (String templateName in templateNames) {
-          print(templateName);
-
-          final templateSnapshot = await templateGroupSnapshot.docs[0].reference
-              .collection("templates")
-              .doc(templateName)
-              .get();
-          print("-> ${templateSnapshot['exerciseCount']}");
-        }
-      }
-    }
   }
 }
