@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/services/template_services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TemplateBuilder extends StatefulWidget {
   const TemplateBuilder({Key? key}) : super(key: key);
@@ -56,16 +57,38 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
     });
   }
 
+  //  [Function] Retrieve TemplateGroup Description Container
+  Container templateGroupDescription(String description) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 40,
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(90), color: Colors.orangeAccent),
+      alignment: Alignment.center,
+      child: Text(
+        description.length > 50
+            ? "${description.substring(0, 50)}.."
+            : description,
+        maxLines: 1,
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
   // [Function] Retrieve TemplateGroup layout
   Container templateGroup(List data, int index) {
     TemplateGroup templateGroupData = data[index];
     // [Widget] WorkoutTemplate List<Widget>
     List<Widget> workoutTemplateWidgets = [];
     for (int i = 0; i < templateGroupData.templates.length; i++) {
-      workoutTemplateWidgets.add(workout(templateGroupData, i));
+      workoutTemplateWidgets.add(workoutLayout(templateGroupData, i));
     }
 
-    // Main Body
     return Container(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
         child: Column(
@@ -134,26 +157,101 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
               color: Colors.white30,
             ),
             if (templateGroupData.description.isNotEmpty)
-              Container(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                  child: Text(
-                    templateGroupData.description.length > 50
-                        ? "${templateGroupData.description.substring(0, 50)}.."
-                        : templateGroupData.description,
-                    maxLines: 1,
-                    style: const TextStyle(
-                      color: Colors.amber,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  )),
+              templateGroupDescription(templateGroupData.description),
+            // Container(
+            //     padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            //     width: MediaQuery.of(context).size.width,
+            //     alignment: Alignment.center,
+            //     child: Text(
+            //       templateGroupData.description.length > 50
+            //           ? "${templateGroupData.description.substring(0, 50)}.."
+            //           : templateGroupData.description,
+            //       maxLines: 1,
+            //       style: const TextStyle(
+            //         color: Colors.amber,
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 12,
+            //       ),
+            //     )),
+            const SizedBox(
+              height: 10,
+            ),
             Column(
               children: workoutTemplateWidgets,
             )
           ],
         ));
+  }
+
+  // [Function] Retrieve Workout Slidable
+  Slidable workoutLayout(TemplateGroup templateGroup, int index) {
+    final Template workoutTemplate = templateGroup.templates[index];
+
+    return Slidable(
+        // Left Side Actions
+        startActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          children: [
+            SlidableAction(
+                backgroundColor: Colors.transparent,
+                foregroundColor: Colors.red,
+                icon: Icons.delete,
+                onPressed: (BuildContext context) {
+                  print(
+                      "${workoutTemplate.name} Delete button has been pressed.");
+                }),
+            SlidableAction(
+                backgroundColor: Colors.transparent,
+                foregroundColor: Colors.blue,
+                icon: Icons.edit,
+                onPressed: (BuildContext context) {
+                  print(
+                      "${workoutTemplate.name} Edit button has been pressed.");
+                })
+          ],
+        ),
+        // Right Side Actions
+        endActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          children: [
+            SlidableAction(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.green,
+              icon: Icons.add_circle,
+              onPressed: (BuildContext context) {
+                print("${workoutTemplate.name} Start button has been pressed");
+              },
+            )
+          ],
+        ),
+        child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black38,
+                    Colors.transparent
+                  ]),
+              // color: Colors.black38,
+              border: Border.symmetric(
+                horizontal: BorderSide(width: 1.0, color: Colors.white30),
+              ),
+            ),
+            child: Text(
+              workoutTemplate.name,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            )));
   }
 
   // [Function] Retrieve Workout Layout

@@ -39,9 +39,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
           // TODO Redirect to 'Start Workout' Page
         },
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith((states) {
-              return Colors.green;
-            }),
+            backgroundColor: MaterialStateProperty.all(Colors.green),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)))),
