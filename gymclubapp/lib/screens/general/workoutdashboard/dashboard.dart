@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/addtemplategroup.dart';
-import 'package:gymclubapp/screens/general/workoutdashboard/template.dart';
+import 'package:gymclubapp/screens/general/workoutdashboard/templatebuilder.dart';
 import 'package:gymclubapp/services/template_services.dart';
 import '../../../utils/utils.dart';
 

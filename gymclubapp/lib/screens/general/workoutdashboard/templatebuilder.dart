@@ -23,12 +23,6 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // [Widget] Main Body
     return Container(
@@ -86,16 +80,28 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
                 ),
-                IconButton(
-                  onPressed: () {
-                    print(
-                        "$templateGroupData Settings Button has been pressed.");
-                  },
-                  icon: const Icon(
-                    Icons.edit,
-                    color: Colors.yellow,
+                Row(children: [
+                  IconButton(
+                    onPressed: () {
+                      print(
+                          "${templateGroupData.name} Edit Button has been pressed.");
+                    },
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.yellow,
+                    ),
                   ),
-                )
+                  IconButton(
+                    onPressed: () {
+                      print(
+                          "${templateGroupData.name} Delete Button has been pressed.");
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+                ]),
               ],
             ),
             const Divider(

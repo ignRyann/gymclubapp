@@ -93,7 +93,11 @@ class AuthService {
 
   // Sign User Out
   void signOut(BuildContext context) {
-    auth.signOut();
+    auth.signOut().onError((error, stackTrace) {
+      print("Error signing user out.");
+    });
+    print("Signing out.");
+
     // Navigator.push(context,
     //     MaterialPageRoute(builder: ((context) => const SignInScreen())));
   }
