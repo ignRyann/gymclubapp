@@ -15,13 +15,4 @@ class Template {
   void addExercise(Exercise exercise) {
     exercises.add(exercise);
   }
-
-  void removeExercise(String exerciseName) {
-    for (Exercise exercise in exercises) {
-      if (exercise.name == exerciseName) {
-        exercises.remove(exercise);
-        break;
-      }
-    }
-  }
 }

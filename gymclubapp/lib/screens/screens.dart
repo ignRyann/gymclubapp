@@ -2,6 +2,7 @@ export 'general/feed.dart';
 export 'general/home.dart';
 export 'general/profile.dart';
 export 'general/workoutdashboard/dashboard.dart';
+export 'general/workoutdashboard/addtemplate.dart';
 export 'authentication/signin.dart';
 export 'authentication/signup.dart';
 export 'authentication/forgotpassword.dart';

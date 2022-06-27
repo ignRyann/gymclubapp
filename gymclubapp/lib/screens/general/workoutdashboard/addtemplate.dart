@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:gymclubapp/screens/general/home.dart';
-import 'package:gymclubapp/services/template_services.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
-class AddTemplateGroupScreen extends StatefulWidget {
-  const AddTemplateGroupScreen({Key? key}) : super(key: key);
+import '../../../models/models.dart';
+import '../../../services/template_services.dart';
+import '../../screens.dart';
+
+class AddTemplateScreen extends StatefulWidget {
+  final TemplateGroup templateGroup;
+  const AddTemplateScreen({Key? key, required this.templateGroup})
+      : super(key: key);
 
   @override
-  State<AddTemplateGroupScreen> createState() => _AddTemplateGroupScreenState();
+  State<AddTemplateScreen> createState() => _AddTemplateScreenState();
 }
 
-class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
+class _AddTemplateScreenState extends State<AddTemplateScreen> {
   // Global Key
-  final _templateGroupKey = GlobalKey<FormState>();
+  final _templateKey = GlobalKey<FormState>();
 
   // Controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
   // Error Messages
-  bool _groupNameAvailable = false;
+  bool _templateNameAvailable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +32,17 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
       backgroundColor: Colors.black,
       elevation: 0.0,
       title: const Text(
-        'Create Group',
+        'Create Template',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       ),
     );
 
-    // [Widget] Template Group Name TextFormField
+    // [Widget] Template Name TextFormField
     final name = TextFormField(
       validator: ((value) {
         if (value != null) {
           if (value.isEmpty || value.length < 3 || value.length > 30) {
-            return 'Group Name must be between 3 & 30 characters.';
+            return 'Template Name must be between 3 & 30 characters.';
           }
         }
         return null;
@@ -48,11 +52,11 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
       autocorrect: true,
       autofocus: false,
       cursorColor: Colors.white,
-      onChanged: (text) async {
-        final groupNameAvailable =
-            await TemplateService().groupNameAvailable(text);
+      onChanged: (templateName) {
+        final templateNameAvailable = TemplateService()
+            .templateNameAvailable(widget.templateGroup, templateName);
         setState(() {
-          _groupNameAvailable = groupNameAvailable;
+          _templateNameAvailable = templateNameAvailable;
         });
       },
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
@@ -61,7 +65,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
             Icons.dashboard,
             color: Colors.white70,
           ),
-          suffixIcon: _groupNameAvailable
+          suffixIcon: _templateNameAvailable
               ? const Icon(
                   Icons.check_outlined,
                   color: Colors.green,
@@ -72,7 +76,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
                   color: Colors.red,
                   size: 30.0,
                 ),
-          labelText: 'Enter Group Name',
+          labelText: 'Enter Template Name',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -82,7 +86,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
               borderSide: const BorderSide(width: 0, style: BorderStyle.none))),
     );
 
-    // [Widget] Template Group Description TextFormField
+    // [Widget] Template Description TextFormField
     final description = TextFormField(
       controller: _descriptionController,
       enableSuggestions: false,
@@ -96,7 +100,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
             Icons.description,
             color: Colors.white70,
           ),
-          labelText: 'Enter Group Description',
+          labelText: 'Enter Template Description',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -106,18 +110,17 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
               borderSide: const BorderSide(width: 0, style: BorderStyle.none))),
     );
 
-    // [Widget] Create Template Group Button
-    final createTemplateGroupButton = Container(
+    // [Widget] Create Template Button
+    final createTemplateButton = Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () async {
-          if (_templateGroupKey.currentState!.validate() &&
-              _groupNameAvailable) {
-            await TemplateService()
-                .createTemplateGroup(
+          if (_templateKey.currentState!.validate() && _templateNameAvailable) {
+            await widget.templateGroup
+                .createTemplate(
                     _nameController.text, _descriptionController.text)
                 .then((value) {
               value ? "Added Template Group" : "Error adding Template Group";
@@ -153,7 +156,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
         decoration: BoxDecoration(gradient: gradientDesign()),
         child: SingleChildScrollView(
             child: Form(
-                key: _templateGroupKey,
+                key: _templateKey,
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(
                         20, MediaQuery.of(context).size.height * 0.05, 20, 40),
@@ -163,7 +166,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
                         const SizedBox(height: 20),
                         description,
                         const SizedBox(height: 20),
-                        createTemplateGroupButton
+                        createTemplateButton
                       ],
                     )))),
       ),

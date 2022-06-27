@@ -31,54 +31,52 @@ class TemplateService {
     return true;
   }
 
+  bool templateNameAvailable(TemplateGroup templateGroup, String name) {
+    return !templateGroup.getTemplateNames().contains(name);
+  }
+
   // [Function] Retrieves a user's data
   Future<List> getData() async {
     List<TemplateGroup> data = [];
     User? user = auth.currentUser;
     if (user != null) {
+      // Query to access 'templateGroups' Collection
+      final templateGroupQuery =
+          db.collection("users").doc(user.uid).collection("templateGroups");
+
       // Retrieves All groups in templateGroups Collection
-      final templateGroupSnapshots = await db
-          .collection("users")
-          .doc(user.uid)
-          .collection("templateGroups")
-          .orderBy('name')
-          .get();
+      final templateGroupSnapshots =
+          await templateGroupQuery.orderBy('name').get();
 
       // Iterate through each document in 'templateGroups' Collection
       for (dynamic templateGroupSnapshot in templateGroupSnapshots.docs) {
         // Creating TemplateGroup Object
         final templateGroup = TemplateGroup(
+          docID: templateGroupSnapshot.id,
           name: templateGroupSnapshot['name'],
           description: templateGroupSnapshot['description'],
         );
 
-        // Retrieves Template Group Document Snapshot
-        final docSnapshot = await db
-            .collection("users")
-            .doc(user.uid)
-            .collection("templateGroups")
-            .where("name", isEqualTo: templateGroupSnapshot['name'])
-            .get();
-
         // Iterates through all the templateNames
         for (String templateName in templateGroupSnapshot['templateNames']) {
-          // Retrieving 'templateName' document snapshot
-          final templateSnapshot = await docSnapshot.docs[0].reference
+          // Query to access 'templateName' doc in 'templateGroups' collection
+          final templateQuery = templateGroupQuery
+              .doc(templateGroupSnapshot.id)
               .collection("templates")
-              .doc(templateName)
-              .get();
+              .doc(templateName);
+
+          // Retrieving 'templateName' document snapshot
+          final templateSnapshot = await templateQuery.get();
 
           // Creating Template() Object
           final template = Template(
               name: templateName,
-              description: templateSnapshot['note'],
+              description: templateSnapshot['description'],
               exerciseCount: templateSnapshot['exerciseCount']);
 
           for (var i = 0; i < templateSnapshot['exerciseCount']; i++) {
             // Retrieving each Exercise document in 'exercises' collection
-            final exerciseSnapshot = await docSnapshot.docs[0].reference
-                .collection("templates")
-                .doc(templateName)
+            final exerciseSnapshot = await templateQuery
                 .collection("exercises")
                 .doc(i.toString())
                 .get();
@@ -125,30 +123,19 @@ class TemplateService {
     return false;
   }
 
-  Future<bool> removeTemplateGroup(String templateGroupName) async {
-    User? user = auth.currentUser;
-    if (user != null) {
+  // [Function] Remove Template Group
+  Future<bool> removeTemplateGroup(TemplateGroup templateGroup) async {
+    try {
       await db
           .collection("users")
-          .doc(user.uid)
+          .doc(auth.currentUser?.uid)
           .collection("templateGroups")
-          .where("name", isEqualTo: templateGroupName)
-          .get()
-          .then((querySnapshots) async {
-        for (var querySnapshot in querySnapshots.docs) {
-          // Printing each document's ID
-          // print("${templateGroupName} has an ID of: ${querySnapshot.id}");
-          await db
-              .collection("users")
-              .doc(user.uid)
-              .collection("templateGroups")
-              .doc(querySnapshot.id)
-              .delete();
-        }
-        return true;
-      });
+          .doc(templateGroup.docID)
+          .delete();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
     }
-
-    return false;
   }
 }

@@ -82,6 +82,23 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                       fontSize: 20),
                 ),
                 Row(children: [
+                  // [Widget] Add Template IconButton
+                  IconButton(
+                    onPressed: () {
+                      print(
+                          "${templateGroupData.name} Add Template Button has been pressed.");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddTemplateScreen(
+                                  templateGroup: templateGroupData)));
+                    },
+                    icon: const Icon(
+                      Icons.add_circle,
+                      color: Colors.green,
+                    ),
+                  ),
+                  // [Widget] Edit TemplateGroup IconButton
                   IconButton(
                     onPressed: () {
                       print(
@@ -89,15 +106,14 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                     },
                     icon: const Icon(
                       Icons.edit,
-                      color: Colors.yellow,
+                      color: Colors.blue,
                     ),
                   ),
+                  // [Widget] Delete TemplateGroup IconButton
                   IconButton(
                     onPressed: () {
-                      print(
-                          "${templateGroupData.name} Delete Button has been pressed.");
                       TemplateService()
-                          .removeTemplateGroup(templateGroupData.name)
+                          .removeTemplateGroup(templateGroupData)
                           .then((isDeleted) {
                         Navigator.push(
                             context,

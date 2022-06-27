@@ -62,7 +62,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const AddTemplateGroup()));
+                    builder: (context) => const AddTemplateGroupScreen()));
           },
           icon: const Icon(
             Icons.add_circle_outline,
@@ -76,7 +76,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
             },
             icon: const Icon(
               Icons.layers_clear,
-              color: Colors.blue,
+              color: Colors.yellow,
               size: 40.0,
             )),
       ],
