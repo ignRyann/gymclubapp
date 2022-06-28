@@ -31,6 +31,14 @@ class TemplateService {
     return true;
   }
 
+  Future<bool> newGroupNameAvailable(String oldName, String newName) async {
+    if (oldName.toLowerCase() == newName.toLowerCase()) {
+      return true;
+    }
+
+    return groupNameAvailable(newName);
+  }
+
   bool templateNameAvailable(TemplateGroup templateGroup, String name) {
     return !templateGroup.getTemplateNames().contains(name);
   }
@@ -114,13 +122,33 @@ class TemplateService {
           .doc(user.uid)
           .collection("templateGroups")
           .add(templateGroup)
-          .then((documentSnapshot) {
-        print("Added Data with ID: ${documentSnapshot.id}");
-      });
+          .then((documentSnapshot) {});
 
       return true;
     }
     return false;
+  }
+
+  // [Function] Update Template Group
+  Future<bool> editTemplateGroup(String docID, String newName,
+      String newDescription, List<String> newTemplates) async {
+    final data = {
+      "name": newName,
+      "description": newDescription,
+      "templateNames": newTemplates
+    };
+    try {
+      await db
+          .collection("users")
+          .doc(auth.currentUser?.uid)
+          .collection("templateGroups")
+          .doc(docID)
+          .set(data);
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 
   // [Function] Remove Template Group

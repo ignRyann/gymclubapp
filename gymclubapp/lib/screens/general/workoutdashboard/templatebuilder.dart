@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
+import 'package:gymclubapp/screens/general/workoutdashboard/edittemplategroup.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/services/template_services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -94,8 +95,6 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                   // [Widget] Add Template IconButton
                   IconButton(
                     onPressed: () {
-                      print(
-                          "${templateGroupData.name} Add Template Button has been pressed.");
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -110,8 +109,13 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                   // [Widget] Edit TemplateGroup IconButton
                   IconButton(
                     onPressed: () {
-                      print(
-                          "${templateGroupData.name} Edit Button has been pressed.");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditTemplateGroupScreen(
+                                    templateGroup: templateGroupData,
+                                    items: templateGroupData.getTemplateNames(),
+                                  )));
                     },
                     icon: const Icon(
                       Icons.edit,

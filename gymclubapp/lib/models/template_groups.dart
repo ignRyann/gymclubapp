@@ -45,11 +45,7 @@ class TemplateGroup {
           .doc(docID)
           .collection("templates")
           .doc(templateName)
-          .set({
-        "name": templateName,
-        "description": templateDescription,
-        "exerciseCount": 0
-      });
+          .set({"description": templateDescription, "exerciseCount": 0});
 
       List templateNames = getTemplateNames();
       templateNames.add(templateName);
@@ -69,8 +65,8 @@ class TemplateGroup {
   }
 
   // [Function] Returns a list of Template Names
-  List getTemplateNames() {
-    List templateNames = [];
+  List<String> getTemplateNames() {
+    List<String> templateNames = [];
     for (Template template in templates) {
       templateNames.add(template.name);
     }
