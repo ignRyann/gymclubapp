@@ -14,7 +14,17 @@ class UserProfileScreen extends StatefulWidget {
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _UserProfileScreenState extends State<UserProfileScreen>
+    with TickerProviderStateMixin {
+  // Tab Bar Controller
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     // [Widget] Profile App Bar
@@ -81,24 +91,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
 
     // [Widget] Tab Bar DefaultTabController
-    final tabBar = DefaultTabController(
-        initialIndex: 0,
-        length: 2,
-        child: TabBar(
-          tabs: const [
-            Tab(
-              text: "Profile",
+    final tabBar = TabBar(
+      controller: _tabController,
+      tabs: const [
+        Tab(
+          text: "Profile",
+        ),
+        Tab(
+          text: "Logs",
+        ),
+      ],
+      labelColor: Colors.white,
+      indicator: MaterialIndicator(
+        horizontalPadding: MediaQuery.of(context).size.width * 0.1,
+        color: Colors.white,
+        paintingStyle: PaintingStyle.fill,
+      ),
+    );
+
+    final tabBarView = SizedBox(
+        height: MediaQuery.of(context).size.height * 0.1,
+        child: TabBarView(
+          controller: _tabController,
+          children: const <Widget>[
+            Center(
+              child: Text("Profile Page"),
             ),
-            Tab(
-              text: "Logs",
-            ),
+            Center(
+              child: Text("Logs Page"),
+            )
           ],
-          labelColor: Colors.white,
-          indicator: MaterialIndicator(
-            horizontalPadding: MediaQuery.of(context).size.width * 0.1,
-            color: Colors.white,
-            paintingStyle: PaintingStyle.fill,
-          ),
         ));
 
     // Main Body
@@ -112,7 +134,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(
-                  children: <Widget>[profilePicture, signOut, tabBar],
+                  children: <Widget>[
+                    profilePicture,
+                    signOut,
+                    tabBar,
+                    tabBarView,
+                  ],
                 ))),
       ),
     );
