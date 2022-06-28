@@ -96,7 +96,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                   color: Colors.red,
                   size: 30.0,
                 ),
-          labelText: 'Enter Group Name',
+          labelText: 'Enter New Group Name',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -120,7 +120,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
             Icons.description,
             color: Colors.white70,
           ),
-          labelText: 'Enter Group Description',
+          labelText: 'Enter New Group Description',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -134,7 +134,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
     final reOrderTemplates = SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
         child: Theme(
-            data: ThemeData(canvasColor: Colors.white70),
+            data: ThemeData(canvasColor: Colors.blueGrey),
             child: ReorderableListView(
                 onReorder: (oldIndex, newIndex) {
                   setState(() {
