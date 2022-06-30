@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 import '../../../models/models.dart';
-import '../../../services/template_services.dart';
 import '../../screens.dart';
 
 class AddTemplateScreen extends StatefulWidget {
+  final UserData userData;
   final TemplateGroup templateGroup;
-  const AddTemplateScreen({Key? key, required this.templateGroup})
+  const AddTemplateScreen(
+      {Key? key, required this.templateGroup, required this.userData})
       : super(key: key);
 
   @override
@@ -53,10 +54,9 @@ class _AddTemplateScreenState extends State<AddTemplateScreen> {
       autofocus: false,
       cursorColor: Colors.white,
       onChanged: (templateName) {
-        final templateNameAvailable = TemplateService()
-            .templateNameAvailable(widget.templateGroup, templateName);
         setState(() {
-          _templateNameAvailable = templateNameAvailable;
+          _templateNameAvailable =
+              widget.templateGroup.templateNameAvailable(templateName);
         });
       },
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
@@ -120,13 +120,14 @@ class _AddTemplateScreenState extends State<AddTemplateScreen> {
         onPressed: () async {
           if (_templateKey.currentState!.validate() && _templateNameAvailable) {
             await widget.templateGroup
-                .createTemplate(
-                    _nameController.text, _descriptionController.text)
+                .createTemplate(widget.userData.uid, _nameController.text,
+                    _descriptionController.text)
                 .then((value) {
-              value ? "Added Template Group" : "Error adding Template Group";
-            }).then((value) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          HomeScreen(userUID: widget.userData.uid)));
             });
           }
         },

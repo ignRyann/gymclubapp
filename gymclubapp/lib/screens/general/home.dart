@@ -1,5 +1,4 @@
 // ignore: import_of_legacy_library_into_null_safe
-// ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,8 @@ import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final String userUID;
+  const HomeScreen({Key? key, required this.userUID}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,11 +17,17 @@ class _HomeScreenState extends State<HomeScreen> {
   // State Class Variables
   int _page = 1;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  final List<Widget> _listPages = [
-    FeedPage(),
-    WorkoutDashboardScreen(),
-    UserProfileScreen(),
-  ];
+  late List<Widget> _listPages;
+
+  @override
+  void initState() {
+    super.initState();
+    _listPages = [
+      const FeedPage(),
+      WorkoutDashboardScreen(userUID: widget.userUID),
+      const UserProfileScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

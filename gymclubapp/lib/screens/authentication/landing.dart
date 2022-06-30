@@ -16,7 +16,7 @@ class LandingScreen extends StatelessWidget {
           User? user = snapshot.data;
           if (user != null && user.emailVerified) {
             print("${user.email} is already logged in!");
-            return const HomeScreen();
+            return HomeScreen(userUID: user.uid);
           } else {
             return const SignInScreen();
           }

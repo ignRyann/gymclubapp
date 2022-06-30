@@ -6,10 +6,12 @@ import 'package:gymclubapp/utils/utils.dart';
 import '../../screens.dart';
 
 class EditTemplateGroupScreen extends StatefulWidget {
+  final String userUID;
   final TemplateGroup templateGroup;
   final List<String> items;
   const EditTemplateGroupScreen({
     Key? key,
+    required this.userUID,
     required this.templateGroup,
     required this.items,
   }) : super(key: key);
@@ -198,8 +200,12 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                     _descriptionController.text,
                     widget.items)
                 .then((value) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomeScreen(
+                            userUID: widget.userUID,
+                          )));
             });
           }
         },

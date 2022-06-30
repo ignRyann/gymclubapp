@@ -1,67 +1,54 @@
-// ignore_for_file: avoid_print
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymclubapp/models/models.dart';
 
 class TemplateGroup {
   String docID;
   String name;
   String description;
+  List<String> templateNames = [];
   List<Template> templates = [];
 
   TemplateGroup({
     required this.docID,
     required this.name,
     required this.description,
+    required this.templateNames,
   });
-
-  Map<String, dynamic> toFireStore() {
-    return {
-      "name": name,
-      "description": description,
-      "templateNames": getTemplateNames(),
-    };
-  }
 
   void addTemplate(Template template) {
     templates.add(template);
   }
 
+  // [Function] Checks if Template name is available
+  bool templateNameAvailable(String name) {
+    return !getTemplateNames().contains(name);
+  }
+
   // [Function] Add Template to Template Group
-  Future<bool> createTemplate(
-      String templateName, String templateDescription) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      print("When creating $templateName template, User was null");
-      return false;
-    }
-    try {
-      final db = FirebaseFirestore.instance;
-      await db
-          .collection("users")
-          .doc(user.uid)
-          .collection("templateGroups")
-          .doc(docID)
-          .collection("templates")
-          .doc(templateName)
-          .set({"description": templateDescription, "exerciseCount": 0});
+  Future<void> createTemplate(
+      String uid, String name, String description) async {
+    final db = FirebaseFirestore.instance;
+    await db
+        .collection("users")
+        .doc(uid)
+        .collection("templateGroups")
+        .doc(docID)
+        .collection("templates")
+        .add({
+      "name": name,
+      "description": description,
+      "exerciseCount": 0,
+    });
 
-      List templateNames = getTemplateNames();
-      templateNames.add(templateName);
+    List templateNames = getTemplateNames();
+    templateNames.add(name);
 
-      db
-          .collection("users")
-          .doc(user.uid)
-          .collection("templateGroups")
-          .doc(docID)
-          .update({"templateNames": templateNames});
-
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+    db
+        .collection("users")
+        .doc(uid)
+        .collection("templateGroups")
+        .doc(docID)
+        .update({"templateNames": templateNames});
   }
 
   // [Function] Returns a list of Template Names

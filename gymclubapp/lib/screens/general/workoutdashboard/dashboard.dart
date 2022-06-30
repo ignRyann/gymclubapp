@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/addtemplategroup.dart';
@@ -6,7 +6,9 @@ import 'package:gymclubapp/screens/general/workoutdashboard/templatebuilder.dart
 import '../../../utils/utils.dart';
 
 class WorkoutDashboardScreen extends StatefulWidget {
-  const WorkoutDashboardScreen({Key? key}) : super(key: key);
+  final String userUID;
+  const WorkoutDashboardScreen({Key? key, required this.userUID})
+      : super(key: key);
 
   @override
   State<WorkoutDashboardScreen> createState() => _WorkoutDashboardScreenState();
@@ -49,35 +51,6 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       ),
     );
 
-    // [Widget] Template Editor Row
-    final templateEditor = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AddTemplateGroupScreen()));
-          },
-          icon: const Icon(
-            Icons.add_to_photos_rounded,
-            color: Colors.green,
-            size: 40.0,
-          ),
-        ),
-        IconButton(
-            onPressed: () {
-              print("ReOrder Templates");
-            },
-            icon: const Icon(
-              Icons.layers_clear,
-              color: Colors.yellow,
-              size: 40.0,
-            )),
-      ],
-    );
-
     // Main Body
     return Scaffold(
       appBar: workoutDashboardAppBar,
@@ -98,9 +71,8 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                       color: Colors.white,
                       thickness: 2.0,
                     ),
-                    templateEditor,
                     const SizedBox(height: 10),
-                    const TemplateBuilder(),
+                    TemplateBuilder(userUID: widget.userUID),
                   ],
                 ))),
       ),

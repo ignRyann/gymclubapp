@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/screens/general/home.dart';
 import 'package:gymclubapp/services/template_services.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class AddTemplateGroupScreen extends StatefulWidget {
-  const AddTemplateGroupScreen({Key? key}) : super(key: key);
+  final UserData userData;
+  const AddTemplateGroupScreen({Key? key, required this.userData})
+      : super(key: key);
 
   @override
   State<AddTemplateGroupScreen> createState() => _AddTemplateGroupScreenState();
@@ -49,10 +52,8 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
       autofocus: false,
       cursorColor: Colors.white,
       onChanged: (text) async {
-        final groupNameAvailable =
-            await TemplateService().groupNameAvailable(text);
         setState(() {
-          _groupNameAvailable = groupNameAvailable;
+          _groupNameAvailable = widget.userData.groupNameAvailable(text, false);
         });
       },
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
@@ -122,8 +123,11 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
                 .then((value) {
               value ? "Added Template Group" : "Error adding Template Group";
             }).then((value) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          HomeScreen(userUID: widget.userData.uid)));
             });
           }
         },
