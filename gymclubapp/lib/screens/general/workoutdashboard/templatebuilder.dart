@@ -67,7 +67,8 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
       Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.65,
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        padding: EdgeInsets.fromLTRB(
+            0, 0, 0, MediaQuery.of(context).size.height * 0.1),
         child: _loaded
             ? ListView.builder(
                 itemCount: userData.data.length,
@@ -109,7 +110,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
     }
 
     return Container(
-        padding: const EdgeInsets.fromLTRB(10, 0, 10, 50),
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 40),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Colors.black26,
