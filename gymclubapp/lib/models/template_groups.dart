@@ -15,13 +15,14 @@ class TemplateGroup {
     required this.templateNames,
   });
 
+  // Add Template
   void addTemplate(Template template) {
     templates.add(template);
   }
 
   // [Function] Checks if Template name is available
   bool templateNameAvailable(String name) {
-    return !getTemplateNames().contains(name);
+    return !templateNames.contains(name);
   }
 
   // [Function] Add Template to Template Group
@@ -40,7 +41,6 @@ class TemplateGroup {
       "exerciseCount": 0,
     });
 
-    List templateNames = getTemplateNames();
     templateNames.add(name);
 
     db
@@ -51,12 +51,25 @@ class TemplateGroup {
         .update({"templateNames": templateNames});
   }
 
-  // [Function] Returns a list of Template Names
-  List<String> getTemplateNames() {
-    List<String> templateNames = [];
-    for (Template template in templates) {
-      templateNames.add(template.name);
-    }
-    return templateNames;
+  // [Function] Delete Template from TemplateGroup
+  Future<void> deleteTemplate(String uid, Template template) async {
+    final db = FirebaseFirestore.instance;
+    // Deleting Template
+    final templateGroupQuery =
+        db.collection("users").doc(uid).collection("templateGroups").doc(docID);
+    await templateGroupQuery
+        .collection("templates")
+        .doc(template.docID)
+        .delete();
+
+    // Updating 'templateNames' field in TemplateGroup Doc
+    templateNames.remove(template.name);
+
+    db
+        .collection("users")
+        .doc(uid)
+        .collection("templateGroups")
+        .doc(docID)
+        .update({"templateNames": templateNames});
   }
 }

@@ -153,7 +153,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                               builder: (context) => EditTemplateGroupScreen(
                                     userUID: widget.userUID,
                                     templateGroup: templateGroup,
-                                    items: templateGroup.getTemplateNames(),
+                                    items: templateGroup.templateNames,
                                   )));
                     },
                     icon: const Icon(
@@ -212,7 +212,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
 
   // [Function] Retrieve Workout Slidable
   Slidable workoutLayout(TemplateGroup templateGroup, int index) {
-    final Template workoutTemplate = templateGroup.templates[index];
+    final Template template = templateGroup.templates[index];
 
     return Slidable(
         groupTag: templateGroup.docID,
@@ -220,21 +220,29 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
         startActionPane: ActionPane(
           motion: const DrawerMotion(),
           children: [
+            // Delete Button
             SlidableAction(
                 backgroundColor: Colors.transparent,
                 foregroundColor: Colors.red,
                 icon: Icons.delete,
-                onPressed: (BuildContext context) {
-                  print(
-                      "${workoutTemplate.name} Delete button has been pressed.");
+                onPressed: (BuildContext context) async {
+                  await templateGroup
+                      .deleteTemplate(widget.userUID, template)
+                      .then((value) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                HomeScreen(userUID: widget.userUID)));
+                  });
                 }),
+            // Edit Button
             SlidableAction(
                 backgroundColor: Colors.transparent,
                 foregroundColor: Colors.blue,
                 icon: Icons.edit,
                 onPressed: (BuildContext context) {
-                  print(
-                      "${workoutTemplate.name} Edit button has been pressed.");
+                  print("${template.name} Edit button has been pressed.");
                 })
           ],
         ),
@@ -242,13 +250,13 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
         endActionPane: ActionPane(
           motion: const DrawerMotion(),
           children: [
+            // Start Button
             SlidableAction(
               backgroundColor: Colors.transparent,
               foregroundColor: Colors.green,
-              icon: Icons.forward,
-              label: "START",
+              icon: Icons.play_circle,
               onPressed: (BuildContext context) {
-                print("${workoutTemplate.name} Start button has been pressed");
+                print("${template.name} Start button has been pressed");
               },
             )
           ],
@@ -274,7 +282,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
               ),
             ),
             child: Text(
-              workoutTemplate.name,
+              template.name,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

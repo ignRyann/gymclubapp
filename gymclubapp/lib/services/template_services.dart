@@ -39,10 +39,6 @@ class TemplateService {
     return groupNameAvailable(newName);
   }
 
-  bool templateNameAvailable(TemplateGroup templateGroup, String name) {
-    return !templateGroup.getTemplateNames().contains(name);
-  }
-
   // [Function] Create Template Group
   Future<bool> createTemplateGroup(String name, String description) async {
     User? user = auth.currentUser;
