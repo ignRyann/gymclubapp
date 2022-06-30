@@ -218,6 +218,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
         groupTag: templateGroup.docID,
         // Left Side Actions
         startActionPane: ActionPane(
+          extentRatio: 0.4,
           motion: const DrawerMotion(),
           children: [
             // Delete Button
@@ -248,6 +249,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
         ),
         // Right Side Actions
         endActionPane: ActionPane(
+          extentRatio: 0.35,
           motion: const DrawerMotion(),
           children: [
             // Start Button
@@ -278,7 +280,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                   ]),
               // color: Colors.black38,
               border: Border.symmetric(
-                horizontal: BorderSide(width: 1.0, color: Colors.white30),
+                horizontal: BorderSide(width: 1, color: Colors.white30),
               ),
             ),
             child: Text(

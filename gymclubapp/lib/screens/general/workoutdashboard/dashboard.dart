@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/addtemplategroup.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/templatebuilder.dart';
 import '../../../utils/utils.dart';
@@ -15,6 +16,11 @@ class WorkoutDashboardScreen extends StatefulWidget {
 }
 
 class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // [Widget] WorkoutDashboard AppBar

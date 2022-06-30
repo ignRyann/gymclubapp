@@ -20,12 +20,12 @@ class TemplateGroup {
     templates.add(template);
   }
 
-  // [Function] Checks if Template name is available
+  // Checks if Template name is available
   bool templateNameAvailable(String name) {
     return !templateNames.contains(name);
   }
 
-  // [Function] Add Template to Template Group
+  // Add Template to Template Group
   Future<void> createTemplate(
       String uid, String name, String description) async {
     final db = FirebaseFirestore.instance;
@@ -51,7 +51,7 @@ class TemplateGroup {
         .update({"templateNames": templateNames});
   }
 
-  // [Function] Delete Template from TemplateGroup
+  // Delete Template from TemplateGroup
   Future<void> deleteTemplate(String uid, Template template) async {
     final db = FirebaseFirestore.instance;
     // Deleting Template

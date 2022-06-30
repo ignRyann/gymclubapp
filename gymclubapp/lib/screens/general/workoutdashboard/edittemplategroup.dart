@@ -136,7 +136,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
     final reOrderTemplates = SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
         child: Theme(
-            data: ThemeData(canvasColor: Colors.blueGrey),
+            data: ThemeData(canvasColor: Colors.white30),
             child: ReorderableListView(
                 onReorder: (oldIndex, newIndex) {
                   setState(() {
@@ -152,7 +152,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                     Card(
                         color: Colors.transparent,
                         key: ValueKey(item),
-                        elevation: 2,
+                        elevation: 4,
                         child: Container(
                             alignment: Alignment.center,
                             padding: const EdgeInsets.symmetric(
