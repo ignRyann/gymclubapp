@@ -14,13 +14,13 @@ class AuthService {
       return false;
     }
 
-    final query = await db.collection("users").get();
+    final query = await db
+        .collection("users")
+        .where("username", isEqualTo: username)
+        .get();
 
-    for (dynamic documentSnapshot in query.docs) {
-      String docUsername = documentSnapshot['username'];
-      if (docUsername.toLowerCase() == username.toLowerCase()) {
-        return false;
-      }
+    if (query.docs.isNotEmpty) {
+      return false;
     }
 
     return true;

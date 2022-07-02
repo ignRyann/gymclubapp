@@ -62,15 +62,13 @@ class UserData {
               // Creating Exercise Object
               final exercise = Exercise(
                   docID: exerciseSnapshot.id,
-                  name: exerciseSnapshot['exercise'],
+                  name: exerciseSnapshot['name'],
                   note: exerciseSnapshot['note'],
                   reps: List.from(exerciseSnapshot['reps']),
                   weights: List.from(exerciseSnapshot['weights']));
 
               // Add Exercise Object to template.exercises
               template.addExercise(exercise);
-              // Breaking inntermost For Loop
-              break;
             }
 
             // Adding Template object to templateGroup.templates
