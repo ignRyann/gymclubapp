@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import '../../utils/widgets.dart';
-import '../../services/auth_services.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -60,6 +59,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       child: ElevatedButton(
         onPressed: () {
           AuthService().signOut(context);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LandingScreen()));
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {

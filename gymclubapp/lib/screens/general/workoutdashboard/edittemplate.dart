@@ -123,6 +123,29 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
               borderSide: const BorderSide(width: 0, style: BorderStyle.none))),
     );
 
+    // [Widget] Add Exercise Button
+    final addExerciseButton = Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: 50,
+      margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
+      child: ElevatedButton(
+        onPressed: () async {
+          print("Add Exercise Button has been pressed.");
+        },
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)))),
+        child: const Text(
+          'Add Exercise',
+          style: TextStyle(
+              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ),
+    );
+
     // [Widget] Customise Template Exercises Expanded
     final customiseTemplate = Expanded(
       child: Theme(
@@ -145,7 +168,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       ),
     );
 
-    // [Widget] Save Template Group Button
+    // [Widget] Save Template Button
     final saveTemplateButton = Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
@@ -194,8 +217,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         child: Form(
             key: _templateKey,
             child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.05, 20, 40),
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
                 child: Column(
                   children: <Widget>[
                     name,
@@ -220,14 +242,15 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       key: Key(index.toString()),
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 40),
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.black26,
+            color: Colors.black45,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Main Header Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -251,12 +274,16 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                   ),
                 ],
               ),
+              // Description TextFormField
               TextFormField(
                 controller: exerciseNoteController,
                 enableSuggestions: false,
                 autofocus: false,
                 maxLines: null,
                 cursorColor: Colors.white,
+                onChanged: (value) {
+                  exercise.note = value;
+                },
                 style: const TextStyle(color: Colors.amber),
                 decoration: InputDecoration(
                   fillColor: Colors.grey.withOpacity(0.1),
@@ -265,14 +292,13 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     color: Colors.white70,
                   ),
                   filled: true,
-                  labelText: 'Enter Exercise Note',
-                  labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  // labelText: 'Enter Exercise Note',
+                  // labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: const BorderSide(
                         width: 0,
-                        style: BorderStyle.none,
+                        // style: BorderStyle.none,
                       )),
                 ),
               ),
@@ -281,6 +307,13 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         ),
         const SizedBox(height: 20)
       ],
+    );
+  }
+
+  // [Function] Retrieve Sets/Reps Layout
+  Row setsRepsLayout(Template template, index) {
+    return Row(
+      children: [],
     );
   }
 }
