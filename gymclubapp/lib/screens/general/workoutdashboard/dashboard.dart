@@ -17,11 +17,6 @@ class WorkoutDashboardScreen extends StatefulWidget {
 
 class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // [Widget] WorkoutDashboard AppBar
     final workoutDashboardAppBar = AppBar(
@@ -59,29 +54,31 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
 
     // Main Body
     return Scaffold(
-      appBar: workoutDashboardAppBar,
-      backgroundColor: Colors.black,
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.9,
-        decoration: BoxDecoration(gradient: gradientDesign()),
-        child: SingleChildScrollView(
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.05, 20, 40),
-                child: Column(
-                  children: <Widget>[
-                    startFreshWorkout,
-                    const SizedBox(height: 20),
-                    const Divider(
-                      color: Colors.white,
-                      thickness: 2.0,
-                    ),
-                    const SizedBox(height: 10),
-                    TemplateBuilder(userUID: widget.userUID),
-                  ],
-                ))),
-      ),
-    );
+        appBar: workoutDashboardAppBar,
+        backgroundColor: Colors.black,
+        body: WillPopScope(
+          onWillPop: () async => !Navigator.of(context).userGestureInProgress,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.9,
+            decoration: BoxDecoration(gradient: gradientDesign()),
+            child: SingleChildScrollView(
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        20, MediaQuery.of(context).size.height * 0.05, 20, 0),
+                    child: Column(
+                      children: <Widget>[
+                        startFreshWorkout,
+                        const SizedBox(height: 20),
+                        const Divider(
+                          color: Colors.white,
+                          thickness: 2.0,
+                        ),
+                        const SizedBox(height: 10),
+                        TemplateBuilder(userUID: widget.userUID),
+                      ],
+                    ))),
+          ),
+        ));
   }
 }

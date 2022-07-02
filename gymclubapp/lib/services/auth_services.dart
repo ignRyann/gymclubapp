@@ -10,7 +10,7 @@ class AuthService {
 
   // Checks if Username is Available
   Future<bool> usernameAvailable(String username) async {
-    if (username.length < 5) {
+    if (username.length < 5 || username.length > 30) {
       return false;
     }
 

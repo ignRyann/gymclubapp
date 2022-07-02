@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/screens/general/home.dart';
-import 'package:gymclubapp/services/template_services.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class AddTemplateGroupScreen extends StatefulWidget {
@@ -53,7 +52,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
       cursorColor: Colors.white,
       onChanged: (text) async {
         setState(() {
-          _groupNameAvailable = widget.userData.groupNameAvailable(text, false);
+          _groupNameAvailable = widget.userData.groupNameAvailable(text);
         });
       },
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
@@ -117,12 +116,10 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
         onPressed: () async {
           if (_templateGroupKey.currentState!.validate() &&
               _groupNameAvailable) {
-            await TemplateService()
+            await widget.userData
                 .createTemplateGroup(
                     _nameController.text, _descriptionController.text)
                 .then((value) {
-              value ? "Added Template Group" : "Error adding Template Group";
-            }).then((value) {
               Navigator.push(
                   context,
                   MaterialPageRoute(

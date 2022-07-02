@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
-import 'package:gymclubapp/screens/general/workoutdashboard/addtemplategroup.dart';
-import 'package:gymclubapp/screens/general/workoutdashboard/edittemplategroup.dart';
 import 'package:gymclubapp/screens/screens.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -151,7 +149,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => EditTemplateGroupScreen(
-                                    userUID: widget.userUID,
+                                    userData: userData,
                                     templateGroup: templateGroup,
                                     items: templateGroup.templateNames,
                                   )));
@@ -243,7 +241,14 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                 foregroundColor: Colors.blue,
                 icon: Icons.edit,
                 onPressed: (BuildContext context) {
-                  print("${template.name} Edit button has been pressed.");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (((context) => EditTemplateScreen(
+                                userUID: widget.userUID,
+                                templateGroup: templateGroup,
+                                template: template,
+                              )))));
                 })
           ],
         ),

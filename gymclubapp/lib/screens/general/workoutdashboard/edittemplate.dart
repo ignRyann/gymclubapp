@@ -1,49 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
+import 'package:gymclubapp/screens/screens.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
-import '../../screens.dart';
-
-class EditTemplateGroupScreen extends StatefulWidget {
-  final UserData userData;
+class EditTemplateScreen extends StatefulWidget {
+  final String userUID;
   final TemplateGroup templateGroup;
-  final List<String> items;
-  const EditTemplateGroupScreen({
+  final Template template;
+  const EditTemplateScreen({
     Key? key,
-    required this.userData,
+    required this.userUID,
     required this.templateGroup,
-    required this.items,
+    required this.template,
   }) : super(key: key);
 
   @override
-  State<EditTemplateGroupScreen> createState() =>
-      EditTemplateGroupScreenState();
+  State<EditTemplateScreen> createState() => _EditTemplateScreenState();
 }
 
-class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
+class _EditTemplateScreenState extends State<EditTemplateScreen> {
   // Global Key
-  final _templateGroupKey = GlobalKey<FormState>();
+  final _templateKey = GlobalKey<FormState>();
 
   // Controllers
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
 
   // Error Messages
-  bool _groupNameAvailable = true;
+  bool _templateNameAvailable = true;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.templateGroup.name);
+    _nameController = TextEditingController(text: widget.template.name);
     _descriptionController =
-        TextEditingController(text: widget.templateGroup.description);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _nameController.dispose();
-    _descriptionController.dispose();
+        TextEditingController(text: widget.template.description);
   }
 
   @override
@@ -53,7 +44,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
       backgroundColor: Colors.black,
       elevation: 0.0,
       title: const Text(
-        'Edit Group',
+        'Edit Template',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       ),
     );
@@ -63,7 +54,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
       validator: ((value) {
         if (value != null) {
           if (value.isEmpty || value.length < 3 || value.length > 30) {
-            return 'Group Name must be between 3 & 30 characters.';
+            return 'Template Name must be between 3 & 30 characters.';
           }
         }
         return null;
@@ -75,8 +66,8 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
       cursorColor: Colors.white,
       onChanged: (text) {
         setState(() {
-          _groupNameAvailable = widget.userData
-              .newGroupNameAvailable(widget.templateGroup.name, text);
+          _templateNameAvailable = widget.templateGroup
+              .newTemplateNameAvailable(widget.template.name, text);
         });
       },
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
@@ -85,7 +76,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
             Icons.dashboard,
             color: Colors.white70,
           ),
-          suffixIcon: _groupNameAvailable
+          suffixIcon: _templateNameAvailable
               ? const Icon(
                   Icons.check_outlined,
                   color: Colors.green,
@@ -96,7 +87,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                   color: Colors.red,
                   size: 30.0,
                 ),
-          labelText: 'Enter New Group Name',
+          labelText: 'Enter New Template Name',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -120,7 +111,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
             Icons.description,
             color: Colors.white70,
           ),
-          labelText: 'Enter New Group Description',
+          labelText: 'Enter New Template Description',
           labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -130,79 +121,24 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
               borderSide: const BorderSide(width: 0, style: BorderStyle.none))),
     );
 
-    // [Widget] ReOrder Templates List View
-    final reOrderTemplates = SizedBox(
-        height: MediaQuery.of(context).size.height * 0.5,
-        child: Theme(
-            data: ThemeData(canvasColor: Colors.white30),
-            child: ReorderableListView(
-                onReorder: (oldIndex, newIndex) {
-                  setState(() {
-                    if (newIndex > oldIndex) {
-                      newIndex -= 1;
-                    }
-                    final item = widget.items.removeAt(oldIndex);
-                    widget.items.insert(newIndex, item);
-                  });
-                },
-                children: <Widget>[
-                  for (final item in widget.items)
-                    Card(
-                        color: Colors.transparent,
-                        key: ValueKey(item),
-                        elevation: 4,
-                        child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 15,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black54,
-                                    Colors.transparent
-                                  ]),
-                              border: Border.symmetric(
-                                horizontal: BorderSide(
-                                    width: 1.0, color: Colors.white30),
-                              ),
-                            ),
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ))),
-                ])));
-
     // [Widget] Save Template Group Button
-    final saveTemplateGroupButton = Container(
+    final saveTemplateButton = Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () async {
-          if (_templateGroupKey.currentState!.validate() &&
-              _groupNameAvailable) {
-            await widget.userData
-                .editTemplateGroup(
-                    widget.templateGroup.docID,
-                    _nameController.text,
-                    _descriptionController.text,
-                    widget.items)
+          if (_templateKey.currentState!.validate() && _templateNameAvailable) {
+            await widget.templateGroup
+                .editTemplate(widget.userUID, widget.template,
+                    _nameController.text, _descriptionController.text)
                 .then((value) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => HomeScreen(
-                            userUID: widget.userData.uid,
+                            userUID: widget.userUID,
                           )));
             });
           }
@@ -233,7 +169,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
         decoration: BoxDecoration(gradient: gradientDesign()),
         child: SingleChildScrollView(
             child: Form(
-                key: _templateGroupKey,
+                key: _templateKey,
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(
                         20, MediaQuery.of(context).size.height * 0.05, 20, 40),
@@ -243,8 +179,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                         const SizedBox(height: 20),
                         description,
                         const SizedBox(height: 20),
-                        reOrderTemplates,
-                        saveTemplateGroupButton
+                        saveTemplateButton
                       ],
                     )))),
       ),

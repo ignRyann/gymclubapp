@@ -83,17 +83,25 @@ class UserData {
   }
 
   // Check if Template Group Name is available
-  bool groupNameAvailable(String name, bool sameNameAllowed) {
+  bool groupNameAvailable(String name) {
     if (name.length < 3 || name.length > 30) {
       return false;
     }
 
     for (TemplateGroup templateGroup in data) {
       if (templateGroup.name.toLowerCase() == name.toLowerCase()) {
-        return sameNameAllowed;
+        return false;
       }
     }
     return true;
+  }
+
+  bool newGroupNameAvailable(String oldName, String newName) {
+    if (oldName.toLowerCase() == newName.toLowerCase()) {
+      return true;
+    }
+
+    return groupNameAvailable(newName);
   }
 
   // Create new Template Group

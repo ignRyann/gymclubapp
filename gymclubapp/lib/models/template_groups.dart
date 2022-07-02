@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gymclubapp/models/models.dart';
 
 class TemplateGroup {
@@ -25,7 +26,16 @@ class TemplateGroup {
     return !templateNames.contains(name);
   }
 
-  // Add Template to Template Group
+  // Checks if Template name is available including its own name
+  bool newTemplateNameAvailable(String oldName, String newName) {
+    if (oldName.toLowerCase() == newName.toLowerCase()) {
+      return true;
+    }
+
+    return templateNameAvailable(newName);
+  }
+
+  // Add Template
   Future<void> createTemplate(
       String uid, String name, String description) async {
     final db = FirebaseFirestore.instance;
@@ -51,7 +61,36 @@ class TemplateGroup {
         .update({"templateNames": templateNames});
   }
 
-  // Delete Template from TemplateGroup
+  // Edit Template
+  Future<void> editTemplate(String uid, Template template, String newName,
+      String newDescription) async {
+    final db = FirebaseFirestore.instance;
+    final templateInfo = {
+      "name": newName,
+      "description": newDescription,
+      "exerciseCount": template.exerciseCount
+    };
+    await db
+        .collection("users")
+        .doc(uid)
+        .collection("templateGroups")
+        .doc(docID)
+        .collection("templates")
+        .doc(template.docID)
+        .set(templateInfo);
+
+    var index = templateNames.indexOf(template.name);
+    templateNames.replaceRange(index, index + 1, [newName]);
+
+    db
+        .collection("users")
+        .doc(uid)
+        .collection("templateGroups")
+        .doc(docID)
+        .update({"templateNames": templateNames});
+  }
+
+  // Delete Template
   Future<void> deleteTemplate(String uid, Template template) async {
     final db = FirebaseFirestore.instance;
     // Deleting Template
