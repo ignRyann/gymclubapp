@@ -105,7 +105,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       enableSuggestions: false,
       autocorrect: true,
       autofocus: false,
-      maxLines: 3,
+      maxLines: 2,
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white.withOpacity(0.9)),
       decoration: InputDecoration(
@@ -303,6 +303,9 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                       )),
                 ),
               ),
+              Column(
+                children: getSetsReps(exercise),
+              )
             ],
           ),
         ),
@@ -311,26 +314,81 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
     );
   }
 
+  // [Function]
+  List<Widget> getSetsReps(Exercise exercise) {
+    final headerRow = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: const [
+        Text(
+          "SETS",
+          style: TextStyle(
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "REPS",
+          style: TextStyle(
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(width: 50),
+      ],
+    );
+    List<Widget> layouts = [const SizedBox(height: 10), headerRow];
+    for (int i = 0; i < exercise.reps.length; i++) {
+      layouts.add(setsRepsLayout(exercise, i));
+    }
+    return layouts;
+  }
+
   // [Function] Retrieve Sets/Reps Layout
-  Row setsRepsLayout(Template template, int index, int setIndex) {
-    final Exercise exercise = template.exercises[index];
+  Row setsRepsLayout(Exercise exercise, int setIndex) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
+        // Set Position
         Container(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+          width: 40,
+          height: 25,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.grey,
-          ),
-          width: 20,
-          height: 20,
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey.withOpacity(0.4)),
           child: Text(
             setIndex.toString(),
+            textAlign: TextAlign.center,
             style: const TextStyle(
-              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.amber,
             ),
           ),
-        )
+        ),
+        // Reps Amount
+        Container(
+          width: 80,
+          height: 25,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey.withOpacity(0.4),
+          ),
+          child: Text(
+            exercise.reps[setIndex].toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        // Delete IconButton
+        IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.red,
+              size: 25,
+            ))
       ],
     );
   }
