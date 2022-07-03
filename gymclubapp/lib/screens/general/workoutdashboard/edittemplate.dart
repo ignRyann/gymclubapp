@@ -164,7 +164,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     widget.template.exercises.removeAt(oldIndex);
                 widget.template.exercises.insert(newIndex, item);
                 for (Exercise exercise in widget.template.exercises) {
-                  print(exercise.name);
+                  log(exercise.name);
                 }
               });
             }),
@@ -274,7 +274,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                           log("Add Set to ${exercise.name} button has been pressed");
                         },
                         icon: const Icon(
-                          Icons.add_box,
+                          Icons.add_to_photos_rounded,
                           color: Colors.green,
                         )),
                     // Delete Icon
@@ -373,7 +373,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.grey.withOpacity(0.4)),
         child: Text(
-          i.toString(),
+          (i + 1).toString(),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 20,
@@ -383,7 +383,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         ),
       );
       setIndexList.add(setIndexItem);
-      setIndexList.add(const SizedBox(height: 20));
+      setIndexList.add(const SizedBox(height: 10));
     }
     return setIndexList;
   }
@@ -417,22 +417,35 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         ),
       );
       repsList.add(repsItem);
-      repsList.add(const SizedBox(height: 20));
+      repsList.add(const SizedBox(height: 10));
     }
     return repsList;
   }
 
   // [Function]
-  List<IconButton> getDeleteButtons(int count) {
-    final List<IconButton> deleteButtons = [];
+  List<Widget> getDeleteButtons(int count) {
+    final List<Widget> deleteButtons = [
+      const Text(
+        "DELETE",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const SizedBox(
+        height: 10,
+      )
+    ];
     for (int i = 0; i < count; i++) {
       deleteButtons.add(IconButton(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        constraints: const BoxConstraints(),
         onPressed: () {
           log("Delete Button has been pressed for Set ${i.toString()}");
         },
         icon: const Icon(
           Icons.delete,
-          color: Colors.red,
+          color: Color.fromARGB(255, 117, 16, 9),
           size: 25,
         ),
       ));
