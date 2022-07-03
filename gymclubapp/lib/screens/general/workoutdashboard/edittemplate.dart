@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/screens/screens.dart';
@@ -123,25 +125,45 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
               borderSide: const BorderSide(width: 0, style: BorderStyle.none))),
     );
 
+    // [Widget] Add Exercise Row
+    final addExerciseRow =
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Text(
+        "Exercise List",
+        style: TextStyle(
+          color: Colors.yellowAccent.withOpacity(0.85),
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+      ),
+      IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.add_circle_outlined,
+            size: 30,
+            color: Colors.green,
+          ))
+    ]);
+
     // [Widget] Add Exercise Button
     final addExerciseButton = Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: 50,
-      margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+      width: MediaQuery.of(context).size.width * 0.5,
+      height: 30,
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () async {
           print("Add Exercise Button has been pressed.");
         },
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white),
+            backgroundColor: MaterialStateProperty.all(Colors.green),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)))),
         child: const Text(
           'Add Exercise',
           style: TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
     );
@@ -164,6 +186,9 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                 final Exercise item =
                     widget.template.exercises.removeAt(oldIndex);
                 widget.template.exercises.insert(newIndex, item);
+                for (Exercise exercise in widget.template.exercises) {
+                  print(exercise.name);
+                }
               });
             }),
       ),
@@ -222,9 +247,11 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                 child: Column(
                   children: <Widget>[
                     name,
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
                     description,
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+                    addExerciseRow,
+                    const Divider(color: Colors.white),
                     customiseTemplate,
                     saveTemplateButton
                   ],
@@ -243,7 +270,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       key: Key(index.toString()),
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.black45,
@@ -303,9 +330,32 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                       )),
                 ),
               ),
+              // Exercise Sets/Reps/Weight
               Column(
                 children: getSetsReps(exercise),
-              )
+              ),
+              // Add Set/Rep/Weight Button
+              Container(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      log("Add Set to ${exercise.name}");
+                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.blueGrey),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                    child: const Text(
+                      '+ Add Set',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ))
             ],
           ),
         ),
