@@ -134,7 +134,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
     final reOrderTemplates = SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
         child: Theme(
-            data: ThemeData(canvasColor: Colors.white30),
+            data: ThemeData(canvasColor: Colors.transparent),
             child: ReorderableListView(
                 onReorder: (oldIndex, newIndex) {
                   setState(() {
@@ -147,38 +147,25 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                 },
                 children: <Widget>[
                   for (final item in widget.items)
-                    Card(
-                        color: Colors.transparent,
+                    Container(
                         key: ValueKey(item),
-                        elevation: 4,
-                        child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 15,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black54,
-                                    Colors.transparent
-                                  ]),
-                              border: Border.symmetric(
-                                horizontal: BorderSide(
-                                    width: 1.0, color: Colors.white30),
-                              ),
-                            ),
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ))),
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black45),
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        )),
                 ])));
 
     // [Widget] Save Template Group Button
