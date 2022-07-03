@@ -145,29 +145,6 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
           ))
     ]);
 
-    // [Widget] Add Exercise Button
-    final addExerciseButton = Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: 30,
-      margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-      child: ElevatedButton(
-        onPressed: () async {
-          print("Add Exercise Button has been pressed.");
-        },
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.green),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)))),
-        child: const Text(
-          'Add Exercise',
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-      ),
-    );
-
     // [Widget] Customise Template Exercises Expanded
     final customiseTemplate = Expanded(
       child: Theme(
@@ -290,16 +267,27 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                         fontWeight: FontWeight.bold,
                         fontSize: 16),
                   ),
-                  // Delete Icon
-                  IconButton(
-                    onPressed: () {
-                      print("Delete ${exercise.name} button has been pressed");
-                    },
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.red,
+                  Row(children: [
+                    // Add Set Icon
+                    IconButton(
+                        onPressed: () {
+                          log("Add Set to ${exercise.name} button has been pressed");
+                        },
+                        icon: const Icon(
+                          Icons.add_box,
+                          color: Colors.green,
+                        )),
+                    // Delete Icon
+                    IconButton(
+                      onPressed: () {
+                        log("Delete ${exercise.name} button has been pressed");
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
                     ),
-                  ),
+                  ])
                 ],
               ),
               // Description TextFormField
@@ -330,32 +318,11 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                       )),
                 ),
               ),
-              // Exercise Sets/Reps/Weight
-              Column(
-                children: getSetsReps(exercise),
+              const SizedBox(
+                height: 10,
               ),
-              // Add Set/Rep/Weight Button
-              Container(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      log("Add Set to ${exercise.name}");
-                    },
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blueGrey),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)))),
-                    child: const Text(
-                      '+ Add Set',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
-                    ),
-                  ))
+              // Exercise Sets/Reps/Weight
+              getSetsRepsLayout(exercise),
             ],
           ),
         ),
@@ -365,81 +332,111 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
   }
 
   // [Function]
-  List<Widget> getSetsReps(Exercise exercise) {
-    final headerRow = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: const [
-        Text(
-          "SETS",
-          style: TextStyle(
-              color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          "REPS",
-          style: TextStyle(
-              color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(width: 50),
-      ],
-    );
-    List<Widget> layouts = [const SizedBox(height: 10), headerRow];
-    for (int i = 0; i < exercise.reps.length; i++) {
-      layouts.add(setsRepsLayout(exercise, i));
-    }
-    return layouts;
-  }
-
-  // [Function] Retrieve Sets/Reps Layout
-  Row setsRepsLayout(Exercise exercise, int setIndex) {
+  Row getSetsRepsLayout(Exercise exercise) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        // Set Position
-        Container(
-          width: 40,
-          height: 25,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey.withOpacity(0.4)),
-          child: Text(
-            setIndex.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.amber,
-            ),
-          ),
+        // Set Index
+        Column(children: getSetIndexList(exercise.reps.length)),
+        // Reps Count
+        Column(
+          children: getRepsList(exercise.reps),
         ),
-        // Reps Amount
-        Container(
-          width: 80,
-          height: 25,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey.withOpacity(0.4),
-          ),
-          child: Text(
-            exercise.reps[setIndex].toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        // Delete Buttons
+        Column(
+          children: getDeleteButtons(exercise.reps.length),
         ),
-        // Delete IconButton
-        IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-              size: 25,
-            ))
       ],
     );
+  }
+
+  // [Function] Get Set Index List
+  List<Widget> getSetIndexList(int count) {
+    List<Widget> setIndexList = [
+      const Text(
+        "SET",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const SizedBox(
+        height: 10,
+      )
+    ];
+    for (int i = 0; i < count; i++) {
+      final setIndexItem = Container(
+        width: 40,
+        height: 25,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey.withOpacity(0.4)),
+        child: Text(
+          i.toString(),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.amber,
+          ),
+        ),
+      );
+      setIndexList.add(setIndexItem);
+      setIndexList.add(const SizedBox(height: 20));
+    }
+    return setIndexList;
+  }
+
+  // [Function] Get Reps List
+  List<Widget> getRepsList(List reps) {
+    List<Widget> repsList = [
+      const Text(
+        "REPS",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 10),
+    ];
+    for (int i = 0; i < reps.length; i++) {
+      final repsItem = Container(
+        width: 80,
+        height: 25,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey.withOpacity(0.4),
+        ),
+        child: Text(
+          reps[i].toString(),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+      repsList.add(repsItem);
+      repsList.add(const SizedBox(height: 20));
+    }
+    return repsList;
+  }
+
+  // [Function]
+  List<IconButton> getDeleteButtons(int count) {
+    final List<IconButton> deleteButtons = [];
+    for (int i = 0; i < count; i++) {
+      deleteButtons.add(IconButton(
+        onPressed: () {
+          log("Delete Button has been pressed for Set ${i.toString()}");
+        },
+        icon: const Icon(
+          Icons.delete,
+          color: Colors.red,
+          size: 25,
+        ),
+      ));
+    }
+    return deleteButtons;
   }
 }
