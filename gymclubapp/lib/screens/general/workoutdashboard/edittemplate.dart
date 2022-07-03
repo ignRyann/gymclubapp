@@ -51,7 +51,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       ),
     );
 
-    // [Widget] Template Group Name TextFormField
+    // [Widget] Template Template Name TextFormField
     final name = TextFormField(
       validator: ((value) {
         if (value != null) {
@@ -149,7 +149,8 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
     // [Widget] Customise Template Exercises Expanded
     final customiseTemplate = Expanded(
       child: Theme(
-        data: ThemeData(canvasColor: Colors.transparent),
+        data: ThemeData(
+            canvasColor: Colors.transparent, shadowColor: Colors.transparent),
         child: ReorderableListView.builder(
             itemBuilder: (BuildContext context, int index) {
               return exerciseLayout(widget.template, index);
@@ -260,7 +261,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                        fontSize: 16),
                   ),
                   // Delete Icon
                   IconButton(
@@ -311,9 +312,26 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
   }
 
   // [Function] Retrieve Sets/Reps Layout
-  Row setsRepsLayout(Template template, index) {
+  Row setsRepsLayout(Template template, int index, int setIndex) {
+    final Exercise exercise = template.exercises[index];
     return Row(
-      children: [],
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.grey,
+          ),
+          width: 20,
+          height: 20,
+          child: Text(
+            setIndex.toString(),
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
     );
   }
 }
