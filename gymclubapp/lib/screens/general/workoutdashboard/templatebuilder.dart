@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/screens/screens.dart';
@@ -90,6 +92,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
 
   // [Function] Load User Data
   void loadData() async {
+    log("loading data.");
     userData = UserData(uid: widget.userUID);
     await userData.loadUserData();
     if (!mounted) return;
@@ -248,7 +251,12 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                                 userUID: widget.userUID,
                                 templateGroup: templateGroup,
                                 template: template,
-                              )))));
+                              ))))).then((value) {
+                    setState(() {
+                      _loaded = false;
+                    });
+                    loadData();
+                  });
                 })
           ],
         ),

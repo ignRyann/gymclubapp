@@ -184,12 +184,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                 .editTemplate(widget.userUID, widget.template,
                     _nameController.text, _descriptionController.text)
                 .then((value) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(
-                            userUID: widget.userUID,
-                          )));
+              Navigator.pop(context);
             });
           }
         },
