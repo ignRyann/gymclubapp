@@ -166,7 +166,12 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                                     userData: userData,
                                     templateGroup: templateGroup,
                                     items: templateGroup.templateNames,
-                                  )));
+                                  ))).then((value) {
+                        setState(() {
+                          _loaded = false;
+                        });
+                        loadData();
+                      });
                     },
                     icon: const Icon(
                       Icons.edit,

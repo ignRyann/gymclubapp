@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
-import '../../screens.dart';
-
 class EditTemplateGroupScreen extends StatefulWidget {
   final UserData userData;
   final TemplateGroup templateGroup;
@@ -185,12 +183,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                     _descriptionController.text,
                     widget.items)
                 .then((value) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(
-                            userUID: widget.userData.uid,
-                          )));
+              Navigator.pop(context);
             });
           }
         },
