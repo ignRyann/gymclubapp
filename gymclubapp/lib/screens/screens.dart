@@ -6,6 +6,7 @@ export 'general/workoutdashboard/addtemplate.dart';
 export 'general/workoutdashboard/edittemplate.dart';
 export 'general/workoutdashboard/addtemplategroup.dart';
 export 'general/workoutdashboard/edittemplategroup.dart';
+export 'general/workoutdashboard/addexercise.dart';
 export 'authentication/signin.dart';
 export 'authentication/signup.dart';
 export 'authentication/forgotpassword.dart';

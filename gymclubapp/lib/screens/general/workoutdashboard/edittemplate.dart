@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
+import 'package:gymclubapp/screens/general/workoutdashboard/addexercise.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class EditTemplateScreen extends StatefulWidget {
@@ -125,24 +126,34 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
     );
 
     // [Widget] Add Exercise Row
-    final addExerciseRow =
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(
-        "Exercise List",
-        style: TextStyle(
-          color: Colors.yellowAccent.withOpacity(0.85),
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
+    final addExerciseRow = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Exercise List Header
+        Text(
+          "Exercise List",
+          style: TextStyle(
+            color: Colors.yellowAccent.withOpacity(0.85),
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
         ),
-      ),
-      IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.add_circle_outlined,
-            size: 30,
-            color: Colors.green,
-          ))
-    ]);
+        // Add Exercise Icon
+        IconButton(
+            onPressed: () {
+              log("Add Exercise to ${widget.template.name} has been pressed.");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AddExerciseScreen()));
+            },
+            icon: const Icon(
+              Icons.add_circle_outlined,
+              size: 30,
+              color: Colors.green,
+            ))
+      ],
+    );
 
     // [Widget] Customise Template Exercises Expanded
     final customiseTemplate = Expanded(
@@ -261,6 +272,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                         fontWeight: FontWeight.bold,
                         fontSize: 16),
                   ),
+                  // Icon Buttons
                   Row(children: [
                     // Add Set Icon
                     IconButton(
