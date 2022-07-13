@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 import '../../../models/models.dart';
-import '../../screens.dart';
 
 class AddTemplateScreen extends StatefulWidget {
   final UserData userData;
@@ -123,11 +122,7 @@ class _AddTemplateScreenState extends State<AddTemplateScreen> {
                 .createTemplate(widget.userData.uid, _nameController.text,
                     _descriptionController.text)
                 .then((value) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          HomeScreen(userUID: widget.userData.uid)));
+              Navigator.pop(context);
             });
           }
         },

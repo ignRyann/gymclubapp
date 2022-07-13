@@ -144,7 +144,12 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                           MaterialPageRoute(
                               builder: (context) => AddTemplateScreen(
                                   userData: userData,
-                                  templateGroup: templateGroup)));
+                                  templateGroup: templateGroup))).then((value) {
+                        setState(() {
+                          _loaded = false;
+                        });
+                        loadData();
+                      });
                     },
                     icon: const Icon(
                       Icons.add_circle,
