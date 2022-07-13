@@ -35,10 +35,16 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
         IconButton(
           onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        AddTemplateGroupScreen(userData: userData)));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AddTemplateGroupScreen(userData: userData)))
+                .then((value) {
+              setState(() {
+                _loaded = false;
+              });
+              loadData();
+            });
           },
           icon: const Icon(
             Icons.add_to_photos_rounded,

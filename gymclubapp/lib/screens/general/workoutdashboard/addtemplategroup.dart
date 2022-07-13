@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/models/models.dart';
-import 'package:gymclubapp/screens/general/home.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class AddTemplateGroupScreen extends StatefulWidget {
@@ -120,11 +119,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
                 .createTemplateGroup(
                     _nameController.text, _descriptionController.text)
                 .then((value) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          HomeScreen(userUID: widget.userData.uid)));
+              Navigator.pop(context);
             });
           }
         },
