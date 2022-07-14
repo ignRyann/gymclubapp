@@ -11,12 +11,18 @@ class DashboardData {
   // User Template Groups, Templates, Exercises, etc
   List<TemplateGroup> data = [];
   // Exercise List
-  List<ExerciseItem> exercises = [];
+  List<ExerciseItem> exerciseList = [];
 
   DashboardData({required this.uid});
 
+  // Load All Data
+  Future<void> loadData() async {
+    await loadUserTemplates();
+    await loadExercises();
+  }
+
   // Load User Data from FireStore
-  Future<void> loadUserData() async {
+  Future<void> loadUserTemplates() async {
     // TemplateGroups Collection Query
     final templateGroupQuery =
         db.collection("users").doc(uid).collection("templateGroups");
@@ -87,11 +93,20 @@ class DashboardData {
     final exerciseSnapshots = await db.collection("exercises").get();
 
     for (DocumentSnapshot exerciseSnapshot in exerciseSnapshots.docs) {
-      exercises.add(ExerciseItem(
+      exerciseList.add(ExerciseItem(
           docID: exerciseSnapshot.id,
           category: exerciseSnapshot['category'],
           name: exerciseSnapshot['name']));
     }
+  }
+
+  // Retrieve List of Exercises Dependent on Category
+  List<ExerciseItem> getExercises(String category) {
+    var categoricList = exerciseList
+        .where((exercise) => exercise.category == category)
+        .toList();
+
+    return categoricList.isEmpty ? [] : categoricList;
   }
 
   // Check if Template Group Name is available

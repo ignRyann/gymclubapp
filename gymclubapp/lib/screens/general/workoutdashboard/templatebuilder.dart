@@ -22,8 +22,8 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
 
   @override
   void initState() {
-    super.initState();
     loadData();
+    super.initState();
   }
 
   @override
@@ -100,7 +100,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
   void loadData() async {
     log("loading data.");
     dashboardData = DashboardData(uid: widget.userUID);
-    await dashboardData.loadUserData();
+    await dashboardData.loadData();
     if (!mounted) return;
     setState(() {
       _loaded = true;

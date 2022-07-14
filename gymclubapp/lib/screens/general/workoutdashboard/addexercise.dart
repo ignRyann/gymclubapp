@@ -53,38 +53,18 @@ class _AddExerciseScreenState extends State<AddExerciseScreen>
       ),
     );
 
-    final tabBarView = SizedBox(
-        height: MediaQuery.of(context).size.height * 0.1,
+    final tabBarView = Expanded(
         child: TabBarView(
-          controller: _tabController,
-          children: const <Widget>[
-            Center(
-              child: Text(
-                "All Exercises",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            Center(
-              child: Text(
-                "Freeweight Exercises",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            Center(
-              child: Text(
-                "Machines",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            Center(
-              child: Text(
-                "Other",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ));
+      controller: _tabController,
+      children: <Widget>[
+        retrieveTabView("all"),
+        retrieveTabView("weights"),
+        retrieveTabView("machines"),
+        retrieveTabView("other"),
+      ],
+    ));
 
+    // Main Body
     return Scaffold(
         appBar: appBar,
         body: Container(
@@ -97,5 +77,45 @@ class _AddExerciseScreenState extends State<AddExerciseScreen>
                 tabBarView,
               ],
             )));
+  }
+
+  // [Function] Retrieves Tab Bar View for each category
+  Container retrieveTabView(String category) {
+    // Dictates what the list items are
+    List<ExerciseItem> exercises = [];
+    if (category == "all") {
+      exercises = widget.dashboardData.exerciseList;
+    } else {
+      exercises = widget.dashboardData.getExercises(category);
+    }
+    // Tab Bar View Container
+    return Container(
+      color: Colors.transparent,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Expanded(
+          // Exercise List Builder
+          child: ListView.builder(
+        itemCount: exercises.length,
+        itemBuilder: (BuildContext context, int index) {
+          // Exercise Item Container
+          return exerciseLayout(exercises[index]);
+        },
+      )),
+    );
+  }
+
+  // [Function] Retrieves ExerciseItemLayout
+  Container exerciseLayout(ExerciseItem exercise) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: 50,
+      color: Colors.black26,
+      child: Center(
+          child: Text(
+        exercise.name,
+        style: const TextStyle(color: Colors.white),
+      )),
+    );
   }
 }
