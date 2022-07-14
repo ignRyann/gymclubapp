@@ -3,7 +3,7 @@ import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class EditTemplateGroupScreen extends StatefulWidget {
-  final UserData userData;
+  final DashboardData userData;
   final TemplateGroup templateGroup;
   final List<String> items;
   const EditTemplateGroupScreen({

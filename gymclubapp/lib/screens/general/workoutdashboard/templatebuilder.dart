@@ -17,7 +17,7 @@ class TemplateBuilder extends StatefulWidget {
 
 class _TemplateBuilderState extends State<TemplateBuilder> {
   // User Data (Templates)
-  late UserData userData;
+  late DashboardData dashboardData;
   bool _loaded = false;
 
   @override
@@ -28,7 +28,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    // [Widget] Template Editor Row
+    // [Widget] Template Groups Editor Row
     final templateEditor = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -38,7 +38,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            AddTemplateGroupScreen(userData: userData)))
+                            AddTemplateGroupScreen(userData: dashboardData)))
                 .then((value) {
               setState(() {
                 _loaded = false;
@@ -54,7 +54,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
         ),
         IconButton(
             onPressed: () {
-              print("ReOrder Templates");
+              log("reOrder Template Groups Button has been pressed.");
             },
             icon: const Icon(
               Icons.layers_clear,
@@ -77,10 +77,10 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
             0, 0, 0, MediaQuery.of(context).size.height * 0.1),
         child: _loaded
             ? ListView.builder(
-                itemCount: userData.data.length,
+                itemCount: dashboardData.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Column(children: [
-                    templateGroup(userData.data, index),
+                    templateGroup(dashboardData.data, index),
                     const SizedBox(height: 20),
                   ]);
                 })
@@ -99,8 +99,8 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
   // [Function] Load User Data
   void loadData() async {
     log("loading data.");
-    userData = UserData(uid: widget.userUID);
-    await userData.loadUserData();
+    dashboardData = DashboardData(uid: widget.userUID);
+    await dashboardData.loadUserData();
     if (!mounted) return;
     setState(() {
       _loaded = true;
@@ -143,7 +143,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AddTemplateScreen(
-                                  userData: userData,
+                                  userData: dashboardData,
                                   templateGroup: templateGroup))).then((value) {
                         setState(() {
                           _loaded = false;
@@ -163,7 +163,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => EditTemplateGroupScreen(
-                                    userData: userData,
+                                    userData: dashboardData,
                                     templateGroup: templateGroup,
                                     items: templateGroup.templateNames,
                                   ))).then((value) {
@@ -181,7 +181,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                   // [Widget] Delete TemplateGroup IconButton
                   IconButton(
                     onPressed: () {
-                      userData
+                      dashboardData
                           .deleteTemplateGroup(templateGroup)
                           .then((isDeleted) {
                         Navigator.push(
@@ -264,7 +264,7 @@ class _TemplateBuilderState extends State<TemplateBuilder> {
                       context,
                       MaterialPageRoute(
                           builder: (((context) => EditTemplateScreen(
-                                userUID: widget.userUID,
+                                dashboardData: dashboardData,
                                 templateGroup: templateGroup,
                                 template: template,
                               ))))).then((value) {

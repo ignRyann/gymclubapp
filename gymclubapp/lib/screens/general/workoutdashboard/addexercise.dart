@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gymclubapp/models/models.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 import '../../../utils/utils.dart';
 
 class AddExerciseScreen extends StatefulWidget {
-  const AddExerciseScreen({Key? key}) : super(key: key);
+  final DashboardData dashboardData;
+  const AddExerciseScreen({Key? key, required this.dashboardData})
+      : super(key: key);
 
   @override
   State<AddExerciseScreen> createState() => _AddExerciseScreenState();
@@ -83,17 +86,16 @@ class _AddExerciseScreenState extends State<AddExerciseScreen>
         ));
 
     return Scaffold(
-      appBar: appBar,
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(gradient: gradientDesign()),
-          child: Column(
-            children: <Widget>[
-              tabBar,
-              tabBarView,
-            ],
-          )),
-    );
+        appBar: appBar,
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(gradient: gradientDesign()),
+            child: Column(
+              children: <Widget>[
+                tabBar,
+                tabBarView,
+              ],
+            )));
   }
 }

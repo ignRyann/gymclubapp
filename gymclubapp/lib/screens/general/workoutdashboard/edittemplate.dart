@@ -8,12 +8,12 @@ import 'package:gymclubapp/screens/general/workoutdashboard/addexercise.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class EditTemplateScreen extends StatefulWidget {
-  final String userUID;
+  final DashboardData dashboardData;
   final TemplateGroup templateGroup;
   final Template template;
   const EditTemplateScreen({
     Key? key,
-    required this.userUID,
+    required this.dashboardData,
     required this.templateGroup,
     required this.template,
   }) : super(key: key);
@@ -145,7 +145,9 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AddExerciseScreen()));
+                      builder: (context) => AddExerciseScreen(
+                            dashboardData: widget.dashboardData,
+                          )));
             },
             icon: const Icon(
               Icons.add_circle_outlined,
@@ -191,7 +193,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         onPressed: () async {
           if (_templateKey.currentState!.validate() && _templateNameAvailable) {
             await widget.templateGroup
-                .editTemplate(widget.userUID, widget.template,
+                .editTemplate(widget.dashboardData.uid, widget.template,
                     _nameController.text, _descriptionController.text)
                 .then((value) {
               Navigator.pop(context);

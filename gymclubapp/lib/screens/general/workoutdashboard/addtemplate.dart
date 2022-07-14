@@ -4,7 +4,7 @@ import 'package:gymclubapp/utils/utils.dart';
 import '../../../models/models.dart';
 
 class AddTemplateScreen extends StatefulWidget {
-  final UserData userData;
+  final DashboardData userData;
   final TemplateGroup templateGroup;
   const AddTemplateScreen(
       {Key? key, required this.templateGroup, required this.userData})

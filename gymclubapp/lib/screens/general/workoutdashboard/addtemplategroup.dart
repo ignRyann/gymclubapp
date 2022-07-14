@@ -3,7 +3,7 @@ import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/utils/utils.dart';
 
 class AddTemplateGroupScreen extends StatefulWidget {
-  final UserData userData;
+  final DashboardData userData;
   const AddTemplateGroupScreen({Key? key, required this.userData})
       : super(key: key);
 

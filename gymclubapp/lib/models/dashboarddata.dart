@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymclubapp/models/models.dart';
 
-class UserData {
+class DashboardData {
   // Connections
   final auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
@@ -10,8 +10,10 @@ class UserData {
   final String uid;
   // User Template Groups, Templates, Exercises, etc
   List<TemplateGroup> data = [];
+  // Exercise List
+  List<ExerciseItem> exercises = [];
 
-  UserData({required this.uid});
+  DashboardData({required this.uid});
 
   // Load User Data from FireStore
   Future<void> loadUserData() async {
@@ -77,6 +79,18 @@ class UserData {
         }
       }
       data.add(templateGroup);
+    }
+  }
+
+  // Load Exercises
+  Future<void> loadExercises() async {
+    final exerciseSnapshots = await db.collection("exercises").get();
+
+    for (DocumentSnapshot exerciseSnapshot in exerciseSnapshots.docs) {
+      exercises.add(ExerciseItem(
+          docID: exerciseSnapshot.id,
+          category: exerciseSnapshot['category'],
+          name: exerciseSnapshot['name']));
     }
   }
 
