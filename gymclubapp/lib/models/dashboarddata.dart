@@ -69,7 +69,6 @@ class DashboardData {
 
               // Creating Exercise Object
               final exercise = Exercise(
-                  docID: exerciseSnapshot.id,
                   name: exerciseSnapshot['name'],
                   note: exerciseSnapshot['note'],
                   reps: List.from(exerciseSnapshot['reps']),
@@ -90,7 +89,8 @@ class DashboardData {
 
   // Load Exercises
   Future<void> loadExercises() async {
-    final exerciseSnapshots = await db.collection("exercises").get();
+    final exerciseSnapshots =
+        await db.collection("exercises").orderBy("name").get();
 
     for (DocumentSnapshot exerciseSnapshot in exerciseSnapshots.docs) {
       exerciseList.add(ExerciseItem(

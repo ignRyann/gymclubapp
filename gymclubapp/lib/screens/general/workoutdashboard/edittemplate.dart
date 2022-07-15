@@ -141,13 +141,23 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         // Add Exercise Icon
         IconButton(
             onPressed: () {
-              log("Add Exercise to ${widget.template.name} has been pressed.");
+              log("Add Exercise Button for ${widget.template.name} has been pressed.");
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddExerciseScreen(
-                            dashboardData: widget.dashboardData,
-                          )));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddExerciseScreen(
+                          dashboardData: widget.dashboardData,
+                        )),
+              ).then(
+                (exerciseName) {
+                  log(exerciseName);
+                  setState(() {
+                    widget.template.exerciseCount += 1;
+                    widget.template.addExercise(Exercise(
+                        name: exerciseName, note: "", reps: [], weights: []));
+                  });
+                },
+              );
             },
             icon: const Icon(
               Icons.add_circle_outlined,
@@ -164,7 +174,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
             canvasColor: Colors.transparent, shadowColor: Colors.transparent),
         child: ReorderableListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              return exerciseLayout(widget.template, index);
+              return exerciseLayout(index);
             },
             itemCount: widget.template.exerciseCount,
             onReorder: (int oldIndex, int newIndex) {
@@ -175,9 +185,6 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                 final Exercise item =
                     widget.template.exercises.removeAt(oldIndex);
                 widget.template.exercises.insert(newIndex, item);
-                for (Exercise exercise in widget.template.exercises) {
-                  log(exercise.name);
-                }
               });
             }),
       ),
@@ -245,9 +252,9 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
   }
 
   // [Function] Retrieve Exercise Layout
-  Column exerciseLayout(Template template, int index) {
+  Column exerciseLayout(int index) {
     // Variables
-    Exercise exercise = template.exercises[index];
+    Exercise exercise = widget.template.exercises[index];
     final TextEditingController exerciseNoteController =
         TextEditingController(text: exercise.note);
     return Column(

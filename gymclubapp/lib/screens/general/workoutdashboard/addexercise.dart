@@ -93,29 +93,37 @@ class _AddExerciseScreenState extends State<AddExerciseScreen>
       color: Colors.transparent,
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: Expanded(
-          // Exercise List Builder
-          child: ListView.builder(
+      child: ListView.builder(
         itemCount: exercises.length,
         itemBuilder: (BuildContext context, int index) {
           // Exercise Item Container
           return exerciseLayout(exercises[index]);
         },
-      )),
+      ),
     );
   }
 
   // [Function] Retrieves ExerciseItemLayout
-  Container exerciseLayout(ExerciseItem exercise) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: 50,
-      color: Colors.black26,
-      child: Center(
+  GestureDetector exerciseLayout(ExerciseItem exercise) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context, exercise.name);
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: 50,
+        color: Colors.black26,
+        child: Center(
           child: Text(
-        exercise.name,
-        style: const TextStyle(color: Colors.white),
-      )),
+            exercise.name,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
