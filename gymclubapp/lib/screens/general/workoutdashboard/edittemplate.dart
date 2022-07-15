@@ -150,12 +150,14 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                         )),
               ).then(
                 (exerciseName) {
-                  log(exerciseName);
-                  setState(() {
-                    widget.template.exerciseCount += 1;
-                    widget.template.addExercise(Exercise(
-                        name: exerciseName, note: "", reps: [], weights: []));
-                  });
+                  if (exerciseName != null) {
+                    log(exerciseName);
+                    setState(() {
+                      widget.template.exerciseCount += 1;
+                      widget.template.addExercise(Exercise(
+                          name: exerciseName, note: "", reps: [], weights: []));
+                    });
+                  }
                 },
               );
             },
