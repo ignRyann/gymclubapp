@@ -71,8 +71,7 @@ class DashboardData {
               final exercise = Exercise(
                   name: exerciseSnapshot['name'],
                   note: exerciseSnapshot['note'],
-                  reps: List.from(exerciseSnapshot['reps']),
-                  weights: List.from(exerciseSnapshot['weights']));
+                  reps: List.from(exerciseSnapshot['reps']));
 
               // Add Exercise Object to template.exercises
               template.addExercise(exercise);

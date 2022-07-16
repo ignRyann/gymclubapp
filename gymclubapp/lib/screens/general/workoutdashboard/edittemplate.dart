@@ -153,8 +153,8 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     log(exerciseName);
                     setState(() {
                       widget.template.exerciseCount += 1;
-                      widget.template.addExercise(Exercise(
-                          name: exerciseName, note: "", reps: [], weights: []));
+                      widget.template.addExercise(
+                          Exercise(name: exerciseName, note: "", reps: []));
                     });
                   }
                 },
@@ -463,10 +463,8 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
         constraints: const BoxConstraints(),
         onPressed: () {
-          log("Delete Button has been pressed for Set ${i.toString()}");
           setState(() {
             exercise.reps.removeAt(i);
-            exercise.weights.removeAt(i);
           });
         },
         icon: const Icon(
