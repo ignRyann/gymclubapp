@@ -137,6 +137,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 setState(() {
                   _errorMessage = string;
                 });
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LandingScreen()));
               }
             });
           }

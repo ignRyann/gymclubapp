@@ -141,7 +141,6 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         // Add Exercise Icon
         IconButton(
             onPressed: () {
-              log("Add Exercise Button for ${widget.template.name} has been pressed.");
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -288,7 +287,9 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     // Add Set Icon
                     IconButton(
                         onPressed: () {
-                          log("Add Set to ${exercise.name} button has been pressed");
+                          setState(() {
+                            exercise.reps.add(0);
+                          });
                         },
                         icon: const Icon(
                           Icons.add_to_photos_rounded,
@@ -298,6 +299,10 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     IconButton(
                       onPressed: () {
                         log("Delete ${exercise.name} button has been pressed");
+                        setState(() {
+                          widget.template.exercises.remove(exercise);
+                          widget.template.exerciseCount -= 1;
+                        });
                       },
                       icon: const Icon(
                         Icons.delete,
@@ -361,7 +366,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         ),
         // Delete Buttons
         Column(
-          children: getDeleteButtons(exercise.reps.length),
+          children: getDeleteButtons(exercise, exercise.reps.length),
         ),
       ],
     );
@@ -440,7 +445,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
   }
 
   // [Function]
-  List<Widget> getDeleteButtons(int count) {
+  List<Widget> getDeleteButtons(Exercise exercise, int count) {
     final List<Widget> deleteButtons = [
       const Text(
         "DELETE",
@@ -459,6 +464,10 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         constraints: const BoxConstraints(),
         onPressed: () {
           log("Delete Button has been pressed for Set ${i.toString()}");
+          setState(() {
+            exercise.reps.removeAt(i);
+            exercise.weights.removeAt(i);
+          });
         },
         icon: const Icon(
           Icons.delete,
