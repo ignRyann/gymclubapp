@@ -58,9 +58,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
-          AuthService().signOut(context);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LandingScreen()));
+          AuthService().signOut().then((value) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          });
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,13 +92,10 @@ class AuthService {
   }
 
   // Sign User Out
-  void signOut(BuildContext context) {
-    auth.signOut().onError((error, stackTrace) {
-      print("Error signing user out.");
+  Future<void> signOut() async {
+    await auth.signOut().onError((error, stackTrace) {
+      log("Error signing user out.");
     });
-    print("Signing out.");
-
-    // Navigator.push(context,
-    //     MaterialPageRoute(builder: ((context) => const SignInScreen())));
+    log("Signing out.");
   }
 }
