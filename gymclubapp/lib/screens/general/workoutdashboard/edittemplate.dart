@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gymclubapp/models/models.dart';
 import 'package:gymclubapp/screens/general/workoutdashboard/addexercise.dart';
 import 'package:gymclubapp/utils/utils.dart';
@@ -201,8 +202,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         onPressed: () async {
           if (_templateKey.currentState!.validate() && _templateNameAvailable) {
             await widget.templateGroup
-                .editTemplate(widget.dashboardData.uid, widget.template,
-                    _nameController.text, _descriptionController.text)
+                .updateTemplate(widget.dashboardData.uid, widget.template)
                 .then((value) {
               Navigator.pop(context);
             });
@@ -330,8 +330,6 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     color: Colors.white70,
                   ),
                   filled: true,
-                  // labelText: 'Enter Exercise Note',
-                  // labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: const BorderSide(
@@ -362,7 +360,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         Column(children: getSetIndexList(exercise.reps.length)),
         // Reps Count
         Column(
-          children: getRepsList(exercise.reps),
+          children: getRepsList(exercise),
         ),
         // Delete Buttons
         Column(
@@ -411,7 +409,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
   }
 
   // [Function] Get Reps List
-  List<Widget> getRepsList(List reps) {
+  List<Widget> getRepsList(Exercise exercise) {
     List<Widget> repsList = [
       const Text(
         "REPS",
@@ -419,7 +417,9 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       ),
       const SizedBox(height: 10),
     ];
-    for (int i = 0; i < reps.length; i++) {
+    for (int i = 0; i < exercise.reps.length; i++) {
+      final TextEditingController controller =
+          TextEditingController(text: exercise.reps[i].toString());
       final repsItem = Container(
         width: 80,
         height: 25,
@@ -428,14 +428,22 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
           borderRadius: BorderRadius.circular(10),
           color: Colors.grey.withOpacity(0.4),
         ),
-        child: Text(
-          reps[i].toString(),
+        child: TextField(
+          cursorColor: Colors.white,
+          decoration: const InputDecoration(focusedBorder: InputBorder.none),
+          controller: controller,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           textAlign: TextAlign.center,
           style: const TextStyle(
+            height: 0.8,
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
+          onChanged: (value) {
+            exercise.reps[i] = value;
+          },
         ),
       );
       repsList.add(repsItem);

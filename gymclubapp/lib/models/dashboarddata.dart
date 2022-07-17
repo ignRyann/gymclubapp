@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymclubapp/models/models.dart';
@@ -90,6 +92,8 @@ class DashboardData {
   Future<void> loadExercises() async {
     final exerciseSnapshots =
         await db.collection("exercises").orderBy("name").get();
+
+    log("${exerciseSnapshots.docs.length}");
 
     for (DocumentSnapshot exerciseSnapshot in exerciseSnapshots.docs) {
       exerciseList.add(ExerciseItem(

@@ -61,6 +61,66 @@ class TemplateGroup {
   }
 
   // Edit Template
+  Future<void> updateTemplate(String uid, Template template) async {
+    final db = FirebaseFirestore.instance;
+
+    final templateRef = db
+        .collection("users")
+        .doc(uid)
+        .collection("templateGroups")
+        .doc(docID)
+        .collection("templates")
+        .doc(template.docID);
+
+    // Deleting unwanted Exercises
+    final templateSnapshot = await templateRef.get();
+    int databaseCount = templateSnapshot['exerciseCount'];
+    if (databaseCount > template.exerciseCount) {
+      while (databaseCount != template.exerciseCount) {
+        databaseCount -= 1;
+        templateRef
+            .collection("exercises")
+            .doc(databaseCount.toString())
+            .delete();
+      }
+    }
+
+    // Setting Template Name, Description & ExerciseCount
+    // Preparing Template Information
+    final templateInfo = {
+      "name": template.name,
+      "description": template.description,
+      "exerciseCount": template.exerciseCount
+    };
+
+    await templateRef.set(templateInfo);
+
+    // Changing Template Name in its parent group : TemplateGroup
+    var index = templateNames.indexOf(template.name);
+    templateNames.replaceRange(index, index + 1, [template.name]);
+
+    db
+        .collection("users")
+        .doc(uid)
+        .collection("templateGroups")
+        .doc(docID)
+        .update({"templateNames": templateNames});
+
+    // Updating Exercises within the Template
+    for (int i = 0; i < template.exerciseCount; i++) {
+      final exerciseRef = templateRef.collection("exercises").doc(i.toString());
+      // Preparing Exercise Information
+      final exercise = template.exercises[i];
+      final exerciseInfo = {
+        "name": exercise.name,
+        "note": exercise.note,
+        "reps": exercise.reps,
+      };
+      exerciseRef.set(exerciseInfo);
+    }
+  }
+
+  // Edit Template
   Future<void> editTemplate(String uid, Template template, String newName,
       String newDescription) async {
     final db = FirebaseFirestore.instance;
