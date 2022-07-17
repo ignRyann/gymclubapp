@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_print, unused_import
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gymclubapp/models/models.dart';
-import 'package:gymclubapp/screens/general/workoutdashboard/addtemplategroup.dart';
-import 'package:gymclubapp/screens/general/workoutdashboard/templatebuilder.dart';
+import 'package:gymclubapp/screens/screens.dart';
 import '../../../utils/utils.dart';
 
 class WorkoutDashboardScreen extends StatefulWidget {
@@ -16,6 +18,26 @@ class WorkoutDashboardScreen extends StatefulWidget {
 }
 
 class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
+  // User Data (Templates)
+  late DashboardData dashboardData;
+  bool _loaded = false;
+
+  @override
+  void initState() {
+    loadData();
+    super.initState();
+  }
+
+  // [Function] Load User Data
+  void loadData() async {
+    dashboardData = DashboardData(uid: widget.userUID);
+    await dashboardData.loadData();
+    if (!mounted) return;
+    setState(() {
+      _loaded = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // [Widget] WorkoutDashboard AppBar
@@ -32,11 +54,12 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
     // [Widget] Start Workout Elevated Button
     final startFreshWorkout = Container(
       width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(vertical: 20),
       height: 40,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
-          print("Redirect to 'Start Workout' Page");
+          log("Redirect to 'Start Workout' Page");
           // TODO Redirect to 'Start Workout' Page
         },
         style: ButtonStyle(
@@ -52,33 +75,300 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       ),
     );
 
+    // [Widget] Template Groups Editor Row
+    final templateGroupsEditor = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Add TemplateGroup IconButton
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AddTemplateGroupScreen(userData: dashboardData)))
+                .then((value) {
+              if (value != null) {
+                setState(() {
+                  _loaded = false;
+                });
+                loadData();
+              }
+            });
+          },
+          icon: const Icon(
+            Icons.add_to_photos_rounded,
+            color: Colors.green,
+            size: 40.0,
+          ),
+        ),
+        // ReOrder Icon Button
+        IconButton(
+            onPressed: () {
+              log("reOrder Template Groups Button has been pressed.");
+            },
+            icon: const Icon(
+              Icons.layers_clear,
+              color: Colors.yellow,
+              size: 40.0,
+            )),
+      ],
+    );
+
     // Main Body
     return Scaffold(
-        appBar: workoutDashboardAppBar,
-        backgroundColor: Colors.black,
-        body: WillPopScope(
-          onWillPop: () async => !Navigator.of(context).userGestureInProgress,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.9,
-            decoration: BoxDecoration(gradient: gradientDesign()),
-            child: SingleChildScrollView(
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        20, MediaQuery.of(context).size.height * 0.05, 20, 0),
-                    child: Column(
-                      children: <Widget>[
-                        startFreshWorkout,
-                        const SizedBox(height: 20),
-                        const Divider(
-                          color: Colors.white,
-                          thickness: 2.0,
+      appBar: workoutDashboardAppBar,
+      backgroundColor: Colors.black,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.9,
+        decoration: BoxDecoration(gradient: gradientDesign()),
+        child: _loaded
+            ? Column(
+                children: <Widget>[
+                  startFreshWorkout,
+                  const Divider(
+                    color: Colors.white,
+                    thickness: 2.0,
+                  ),
+                  const SizedBox(height: 10),
+                  templateGroupsEditor,
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                      child: ListView.builder(
+                          itemCount: dashboardData.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return templateGroupLayout(
+                                dashboardData.data[index]);
+                          }))
+                ],
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+      ),
+    );
+  }
+
+  // [Function] Retrieves Template Group Layout
+  Container templateGroupLayout(TemplateGroup templateGroup) {
+    List<Widget> templateWidgets = [];
+    for (int i = 0; i < templateGroup.templates.length; i++) {
+      templateWidgets.add(templateLayout(templateGroup, i));
+    }
+
+    return Container(
+      margin: const EdgeInsets.all(15),
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.black26,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Template Group Name & Editor
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                templateGroup.name,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
+              Row(children: [
+                // [Widget] Add Template IconButton
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddTemplateScreen(
+                            userData: dashboardData,
+                            templateGroup: templateGroup),
+                      ),
+                    ).then((value) {
+                      if (value != null) {
+                        setState(() {
+                          _loaded = false;
+                        });
+                        loadData();
+                      }
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.add_circle,
+                    color: Colors.green,
+                  ),
+                ),
+                // [Widget] Edit TemplateGroup IconButton
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditTemplateGroupScreen(
+                          userData: dashboardData,
+                          templateGroup: templateGroup,
+                          items: templateGroup.templateNames,
                         ),
-                        const SizedBox(height: 10),
-                        TemplateBuilder(userUID: widget.userUID),
-                      ],
-                    ))),
+                      ),
+                    ).then((value) {
+                      if (value != null) {
+                        setState(() {
+                          _loaded = false;
+                        });
+                        loadData();
+                      }
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                  ),
+                ),
+                // [Widget] Delete TemplateGroup IconButton
+                IconButton(
+                  onPressed: () {
+                    dashboardData
+                        .deleteTemplateGroup(templateGroup)
+                        .then((value) {
+                      setState(() {
+                        dashboardData.data.remove(templateGroup);
+                      });
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                ),
+              ]),
+            ],
           ),
-        ));
+          // Template Group Description
+          if (templateGroup.description.isNotEmpty)
+            Container(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                child: Text(
+                  templateGroup.description.length > 50
+                      ? "${templateGroup.description.substring(0, 50)}.."
+                      : templateGroup.description,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    color: Colors.amber,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                )),
+          const SizedBox(height: 10),
+          SlidableAutoCloseBehavior(
+              child: Column(
+            children: templateWidgets,
+          ))
+        ],
+      ),
+    );
+  }
+
+  // [Function] Retrieves Template Slidable Layout
+  Slidable templateLayout(TemplateGroup templateGroup, int index) {
+    Template template = templateGroup.templates[index];
+    return Slidable(
+      groupTag: templateGroup.docID,
+      // Left Side Actions
+      startActionPane: ActionPane(
+        extentRatio: 0.4,
+        motion: const DrawerMotion(),
+        children: [
+          // Delete Button
+          SlidableAction(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.red,
+              icon: Icons.delete,
+              onPressed: (BuildContext context) async {
+                await templateGroup
+                    .deleteTemplate(widget.userUID, template)
+                    .then((value) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              HomeScreen(userUID: widget.userUID)));
+                });
+              }),
+          // Edit Button
+          SlidableAction(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.blue,
+              icon: Icons.edit,
+              onPressed: (BuildContext context) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (((context) => EditTemplateScreen(
+                              dashboardData: dashboardData,
+                              templateGroup: templateGroup,
+                              template: template,
+                            ))))).then((value) {
+                  setState(() {
+                    _loaded = false;
+                  });
+                  loadData();
+                });
+              })
+        ],
+      ),
+      // Right Side Actions
+      endActionPane: ActionPane(
+        extentRatio: 0.35,
+        motion: const DrawerMotion(),
+        children: [
+          // Start Button
+          SlidableAction(
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.green,
+            icon: Icons.play_circle,
+            onPressed: (BuildContext context) {
+              print("${template.name} Start button has been pressed");
+            },
+          )
+        ],
+      ),
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Colors.transparent,
+                Colors.black54,
+                Colors.transparent,
+              ]),
+          border: Border.symmetric(
+            horizontal: BorderSide(width: 1, color: Colors.white30),
+          ),
+        ),
+        child: Text(
+          template.name,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
   }
 }

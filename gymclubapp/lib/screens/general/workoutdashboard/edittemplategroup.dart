@@ -183,7 +183,7 @@ class EditTemplateGroupScreenState extends State<EditTemplateGroupScreen> {
                     _descriptionController.text,
                     widget.items)
                 .then((value) {
-              Navigator.pop(context);
+              Navigator.pop(context, "");
             });
           }
         },

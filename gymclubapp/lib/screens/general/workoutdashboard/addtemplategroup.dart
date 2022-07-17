@@ -119,7 +119,7 @@ class _AddTemplateGroupScreenState extends State<AddTemplateGroupScreen> {
                 .createTemplateGroup(
                     _nameController.text, _descriptionController.text)
                 .then((value) {
-              Navigator.pop(context);
+              Navigator.pop(context, "");
             });
           }
         },
