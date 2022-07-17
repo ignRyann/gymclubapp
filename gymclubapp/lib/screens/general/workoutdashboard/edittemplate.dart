@@ -297,7 +297,6 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                     // Delete Icon
                     IconButton(
                       onPressed: () {
-                        log("Delete ${exercise.name} button has been pressed");
                         setState(() {
                           widget.template.exercises.remove(exercise);
                         });
@@ -349,7 +348,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
     );
   }
 
-  // [Function]
+  // [Function] Retrieves the set / reps template
   Row getSetsRepsLayout(Exercise exercise) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -408,6 +407,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
 
   // [Function] Get Reps List
   List<Widget> getRepsList(Exercise exercise) {
+    // Creating List
     List<Widget> repsList = [
       const Text(
         "REPS",
@@ -415,9 +415,15 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       ),
       const SizedBox(height: 10),
     ];
+    // Iterating through each Rep
     for (int i = 0; i < exercise.reps.length; i++) {
-      final TextEditingController controller =
+      // Creating TextEditingController
+      TextEditingController controller =
           TextEditingController(text: exercise.reps[i].toString());
+      controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: controller.text.length));
+
+      // Creating Reps Container
       final repsItem = Container(
         width: 80,
         height: 25,
@@ -426,6 +432,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
           borderRadius: BorderRadius.circular(10),
           color: Colors.grey.withOpacity(0.4),
         ),
+        // Reps TextField
         child: TextField(
           cursorColor: Colors.white,
           decoration: const InputDecoration(focusedBorder: InputBorder.none),
@@ -440,17 +447,24 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
             fontWeight: FontWeight.bold,
           ),
           onChanged: (value) {
-            exercise.reps[i] = value;
+            if (value.length > 3) {
+              setState(() {
+                controller.text = controller.text.substring(0, 3);
+              });
+            } else {
+              exercise.reps[i] = value;
+            }
           },
         ),
       );
+      // Adding items to List
       repsList.add(repsItem);
       repsList.add(const SizedBox(height: 10));
     }
     return repsList;
   }
 
-  // [Function]
+  // [Function] Get Delete Button List
   List<Widget> getDeleteButtons(Exercise exercise, int count) {
     final List<Widget> deleteButtons = [
       const Text(
@@ -464,6 +478,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         height: 10,
       )
     ];
+    // Iterating Delete Button Creation
     for (int i = 0; i < count; i++) {
       deleteButtons.add(IconButton(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
