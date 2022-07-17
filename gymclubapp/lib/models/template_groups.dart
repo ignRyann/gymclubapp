@@ -73,10 +73,10 @@ class TemplateGroup {
         .doc(template.docID);
 
     // Deleting unwanted Exercises
-    final templateSnapshot = await templateRef.get();
-    int databaseCount = templateSnapshot['exerciseCount'];
-    if (databaseCount > template.exerciseCount) {
-      while (databaseCount != template.exerciseCount) {
+    final templateSnapshot = await templateRef.collection("exercises").get();
+    int databaseCount = templateSnapshot.docs.length;
+    if (databaseCount > template.exercises.length) {
+      while (databaseCount != template.exercises.length) {
         databaseCount -= 1;
         templateRef
             .collection("exercises")
@@ -85,12 +85,11 @@ class TemplateGroup {
       }
     }
 
-    // Setting Template Name, Description & ExerciseCount
+    // Setting Template Name, Description
     // Preparing Template Information
     final templateInfo = {
       "name": template.name,
       "description": template.description,
-      "exerciseCount": template.exerciseCount
     };
 
     await templateRef.set(templateInfo);
@@ -107,7 +106,7 @@ class TemplateGroup {
         .update({"templateNames": templateNames});
 
     // Updating Exercises within the Template
-    for (int i = 0; i < template.exerciseCount; i++) {
+    for (int i = 0; i < template.exercises.length; i++) {
       final exerciseRef = templateRef.collection("exercises").doc(i.toString());
       // Preparing Exercise Information
       final exercise = template.exercises[i];
@@ -118,35 +117,6 @@ class TemplateGroup {
       };
       exerciseRef.set(exerciseInfo);
     }
-  }
-
-  // Edit Template
-  Future<void> editTemplate(String uid, Template template, String newName,
-      String newDescription) async {
-    final db = FirebaseFirestore.instance;
-    final templateInfo = {
-      "name": newName,
-      "description": newDescription,
-      "exerciseCount": template.exerciseCount
-    };
-    await db
-        .collection("users")
-        .doc(uid)
-        .collection("templateGroups")
-        .doc(docID)
-        .collection("templates")
-        .doc(template.docID)
-        .set(templateInfo);
-
-    var index = templateNames.indexOf(template.name);
-    templateNames.replaceRange(index, index + 1, [newName]);
-
-    db
-        .collection("users")
-        .doc(uid)
-        .collection("templateGroups")
-        .doc(docID)
-        .update({"templateNames": templateNames});
   }
 
   // Delete Template

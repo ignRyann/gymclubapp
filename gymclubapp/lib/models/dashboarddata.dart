@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymclubapp/models/models.dart';
@@ -57,18 +55,15 @@ class DashboardData {
             final template = Template(
                 docID: templateSnapshot.id,
                 name: templateName,
-                description: templateSnapshot['description'],
-                exerciseCount: templateSnapshot['exerciseCount']);
+                description: templateSnapshot['description']);
 
-            final templateQuery = templateSnapshotsQuery.doc(template.docID);
+            final exerciseSnapshotsQuery = templateSnapshotsQuery
+                .doc(template.docID)
+                .collection("exercises");
+            final exerciseSnapshots = await exerciseSnapshotsQuery.get();
 
-            // Retrieving each Exercise document in 'exercises' subcollection
-            for (var i = 0; i < template.exerciseCount; i++) {
-              final exerciseSnapshot = await templateQuery
-                  .collection("exercises")
-                  .doc(i.toString())
-                  .get();
-
+            for (QueryDocumentSnapshot exerciseSnapshot
+                in exerciseSnapshots.docs) {
               // Creating Exercise Object
               final exercise = Exercise(
                   name: exerciseSnapshot['name'],
@@ -92,8 +87,6 @@ class DashboardData {
   Future<void> loadExercises() async {
     final exerciseSnapshots =
         await db.collection("exercises").orderBy("name").get();
-
-    log("${exerciseSnapshots.docs.length}");
 
     for (DocumentSnapshot exerciseSnapshot in exerciseSnapshots.docs) {
       exerciseList.add(ExerciseItem(

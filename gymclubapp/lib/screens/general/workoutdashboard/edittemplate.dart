@@ -153,7 +153,6 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                   if (exerciseName != null) {
                     log(exerciseName);
                     setState(() {
-                      widget.template.exerciseCount += 1;
                       widget.template.addExercise(
                           Exercise(name: exerciseName, note: "", reps: []));
                     });
@@ -178,7 +177,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
             itemBuilder: (BuildContext context, int index) {
               return exerciseLayout(index);
             },
-            itemCount: widget.template.exerciseCount,
+            itemCount: widget.template.exercises.length,
             onReorder: (int oldIndex, int newIndex) {
               setState(() {
                 if (oldIndex < newIndex) {
@@ -301,7 +300,6 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                         log("Delete ${exercise.name} button has been pressed");
                         setState(() {
                           widget.template.exercises.remove(exercise);
-                          widget.template.exerciseCount -= 1;
                         });
                       },
                       icon: const Icon(
