@@ -131,18 +131,18 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                     color: Colors.white,
                     thickness: 2.0,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   templateGroupsEditor,
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 10),
                   Expanded(
-                      child: ListView.builder(
-                          itemCount: dashboardData.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return templateGroupLayout(
-                                dashboardData.data[index]);
-                          }))
+                    child: ListView.builder(
+                      itemCount: dashboardData.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return templateGroupLayout(dashboardData.data[index]);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                 ],
               )
             : const Center(
@@ -298,11 +298,10 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
                 await templateGroup
                     .deleteTemplate(widget.userUID, template)
                     .then((value) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              HomeScreen(userUID: widget.userUID)));
+                  setState(() {
+                    templateGroup.templateNames.remove(template.name);
+                    templateGroup.templates.remove(template);
+                  });
                 });
               }),
           // Edit Button

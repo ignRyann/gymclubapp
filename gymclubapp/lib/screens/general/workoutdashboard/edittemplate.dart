@@ -420,8 +420,9 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
       // Creating TextEditingController
       TextEditingController controller =
           TextEditingController(text: exercise.reps[i].toString());
-      controller.selection = TextSelection.fromPosition(
-          TextPosition(offset: controller.text.length));
+      controller.selection = TextSelection.fromPosition(TextPosition(
+        offset: controller.text.length,
+      ));
 
       // Creating Reps Container
       final repsItem = Container(

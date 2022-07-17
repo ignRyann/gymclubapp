@@ -122,7 +122,7 @@ class _AddTemplateScreenState extends State<AddTemplateScreen> {
                 .createTemplate(widget.userData.uid, _nameController.text,
                     _descriptionController.text)
                 .then((value) {
-              Navigator.pop(context);
+              Navigator.pop(context, "");
             });
           }
         },
