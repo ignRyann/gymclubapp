@@ -76,6 +76,7 @@ class DashboardData {
 
             // Adding Template object to templateGroup.templates
             templateGroup.addTemplate(template);
+            break;
           }
         }
       }

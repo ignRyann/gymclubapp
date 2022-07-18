@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, unused_import
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -337,7 +335,8 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
             foregroundColor: Colors.green,
             icon: Icons.play_circle,
             onPressed: (BuildContext context) {
-              print("${template.name} Start button has been pressed");
+              log("${template.name} Start button has been pressed");
+              //TODO Create 'Start Workout' Page given template
             },
           )
         ],

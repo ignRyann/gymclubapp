@@ -1,5 +1,4 @@
-// ignore: import_of_legacy_library_into_null_safe
-// ignore_for_file: avoid_print, prefer_const_constructors
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gymclubapp/utils/utils.dart';
@@ -26,15 +25,15 @@ class _FeedPageState extends State<FeedPage> {
       ),
       actions: [
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
           child: CircleAvatar(
             backgroundColor: Colors.white,
             radius: 22,
             child: IconButton(
                 onPressed: (() {
-                  print("Notifications Button Pressed");
+                  log("Notifications Button Pressed");
                 }),
-                icon: Icon(
+                icon: const Icon(
                   Icons.notifications,
                   color: Colors.black87,
                   size: 25,

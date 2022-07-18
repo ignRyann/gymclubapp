@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -40,7 +40,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
             splashRadius: 20,
             onPressed: () {
               // TODO Create Profile Settings
-              print("Profile Settings has been pressed.");
+              log("Profile Settings has been pressed.");
             },
             icon: const Icon(
               Icons.settings,
