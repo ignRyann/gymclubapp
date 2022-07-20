@@ -57,8 +57,15 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: ElevatedButton(
         onPressed: () {
-          log("Redirect to 'Start Workout' Page");
-          // TODO Redirect to 'Start Workout' Page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StartWorkoutScreen(
+                dashboardData: dashboardData,
+                workout: Workout(),
+              ),
+            ),
+          );
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.green),
@@ -116,7 +123,6 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
     // Main Body
     return Scaffold(
       appBar: workoutDashboardAppBar,
-      backgroundColor: Colors.black,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.9,
@@ -309,17 +315,21 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
               icon: Icons.edit,
               onPressed: (BuildContext context) {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (((context) => EditTemplateScreen(
-                              dashboardData: dashboardData,
-                              templateGroup: templateGroup,
-                              template: template,
-                            ))))).then((value) {
-                  setState(() {
-                    _loaded = false;
-                  });
-                  loadData();
+                  context,
+                  MaterialPageRoute(
+                    builder: (((context) => EditTemplateScreen(
+                          dashboardData: dashboardData,
+                          templateGroup: templateGroup,
+                          template: template.copy(),
+                        ))),
+                  ),
+                ).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      _loaded = false;
+                    });
+                    loadData();
+                  }
                 });
               })
         ],
@@ -335,8 +345,18 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
             foregroundColor: Colors.green,
             icon: Icons.play_circle,
             onPressed: (BuildContext context) {
-              log("${template.name} Start button has been pressed");
+              Workout workout = Workout();
+              workout.fromTemplate(template.copy());
               //TODO Create 'Start Workout' Page given template
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (((context) => StartWorkoutScreen(
+                        dashboardData: dashboardData,
+                        workout: workout,
+                      ))),
+                ),
+              );
             },
           )
         ],

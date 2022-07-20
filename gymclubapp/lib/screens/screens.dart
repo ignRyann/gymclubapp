@@ -12,3 +12,4 @@ export 'authentication/signup.dart';
 export 'authentication/forgotpassword.dart';
 export 'authentication/landing.dart';
 export '../services/auth_services.dart';
+export 'package:gymclubapp/screens/general/workoutdashboard/startworkout.dart';

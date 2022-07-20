@@ -15,4 +15,16 @@ class Template {
   void addExercise(Exercise exercise) {
     exercises.add(exercise);
   }
+
+  Template copy() {
+    Template copy = Template(
+      docID: docID,
+      name: name,
+      description: description,
+    );
+    for (Exercise exercise in exercises) {
+      copy.addExercise(exercise.copy());
+    }
+    return copy;
+  }
 }
