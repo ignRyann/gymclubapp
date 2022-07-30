@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gymclubapp/models/models.dart';
@@ -40,7 +38,13 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                   size: 28,
                 ),
                 onPressed: () {
-                  log("Finish Workout Button has been pressed.");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ConfirmWorkoutScreen(
+                              workout: widget.workout,
+                            )),
+                  );
                 },
               ),
             )));
@@ -54,31 +58,6 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       ),
       actions: [finishWorkoutButton],
-    );
-
-    // [Widget] Post Workout Button
-    final postWorkoutButton = Container(
-      width: MediaQuery.of(context).size.width * 0.3,
-      height: 50,
-      margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-      child: ElevatedButton(
-        onPressed: () async {
-          //TODO Implement Log Workout Button
-        },
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith((states) {
-              return Colors.white;
-            }),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)))),
-        child: const Text(
-          'FINISH',
-          style: TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-      ),
     );
 
     // [Widget] Workout Title TextFormField

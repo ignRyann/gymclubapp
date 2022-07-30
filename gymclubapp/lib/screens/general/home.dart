@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _listPages = [
       const FeedPage(),
       WorkoutDashboardScreen(userUID: widget.userUID),
-      const UserProfileScreen(),
+      ProfileScreen(userUID: widget.userUID),
     ];
   }
 

@@ -29,7 +29,7 @@ class _WorkoutDashboardScreenState extends State<WorkoutDashboardScreen> {
   // [Function] Load User Data
   void loadData() async {
     dashboardData = DashboardData(uid: widget.userUID);
-    await dashboardData.loadData();
+    await dashboardData.loadWorkoutData();
     if (!mounted) return;
     setState(() {
       _loaded = true;

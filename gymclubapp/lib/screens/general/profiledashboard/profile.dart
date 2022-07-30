@@ -4,17 +4,21 @@ import 'package:flutter/material.dart';
 
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:gymclubapp/screens/screens.dart';
-import '../../utils/widgets.dart';
+import '../../../utils/widgets.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+class ProfileScreen extends StatefulWidget {
+  final String userUID;
+  const ProfileScreen({Key? key, required this.userUID}) : super(key: key);
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen>
+class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
+  // Data Loaded?
+  bool _loaded = false;
+
   // Tab Bar Controller
   late TabController _tabController;
 

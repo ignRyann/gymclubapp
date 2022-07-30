@@ -15,8 +15,8 @@ class DashboardData {
 
   DashboardData({required this.uid});
 
-  // Load All Data
-  Future<void> loadData() async {
+  // Load Workout Data
+  Future<void> loadWorkoutData() async {
     await loadUserTemplates();
     await loadExercises();
   }

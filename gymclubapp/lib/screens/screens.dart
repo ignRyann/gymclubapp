@@ -1,6 +1,6 @@
 export 'general/feed.dart';
 export 'general/home.dart';
-export 'general/profile.dart';
+export 'general/profiledashboard/profile.dart';
 export 'general/workoutdashboard/dashboard.dart';
 export 'general/workoutdashboard/addtemplate.dart';
 export 'general/workoutdashboard/edittemplate.dart';
@@ -13,3 +13,4 @@ export 'authentication/forgotpassword.dart';
 export 'authentication/landing.dart';
 export '../services/auth_services.dart';
 export 'package:gymclubapp/screens/general/workoutdashboard/startworkout.dart';
+export 'general/workoutdashboard/confirmworkout.dart';
