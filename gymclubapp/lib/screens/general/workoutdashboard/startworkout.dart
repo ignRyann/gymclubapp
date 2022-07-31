@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gymclubapp/models/models.dart';
@@ -37,14 +39,18 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                   color: Colors.green,
                   size: 28,
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ConfirmWorkoutScreen(
-                              workout: widget.workout,
-                            )),
-                  );
+                onPressed: () async {
+                  widget.workout.post(widget.dashboardData.uid).then((value) {
+                    Navigator.pop(context, widget.dashboardData.uid);
+                  });
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => ConfirmWorkoutScreen(
+                  //             workout: widget.workout,
+                  //           )),
+                  // );
                 },
               ),
             )));
@@ -161,8 +167,8 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
             (exerciseName) {
               if (exerciseName != null) {
                 setState(() {
-                  widget.workout.addExercise(
-                      Exercise(name: exerciseName, note: "", reps: []));
+                  widget.workout.addExercise(Exercise(
+                      name: exerciseName, note: "", reps: [], weights: []));
                 });
               }
             },
@@ -253,6 +259,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                         onPressed: () {
                           setState(() {
                             exercise.reps.add(0);
+                            exercise.weights.add(0);
                           });
                         },
                         icon: const Icon(
@@ -383,8 +390,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
       const SizedBox(height: 10),
     ];
     // Iterating through each Weight
-    for (int i = 0; i < exercise.reps.length; i++) {
-      exercise.weights.add(0);
+    for (int i = 0; i < exercise.weights.length; i++) {
       // Creating TextEditingController
       TextEditingController controller =
           TextEditingController(text: "${exercise.weights[i]}");
@@ -515,6 +521,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
         onPressed: () {
           setState(() {
             exercise.reps.removeAt(i);
+            exercise.weights.removeAt(i);
           });
         },
         icon: const Icon(

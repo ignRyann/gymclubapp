@@ -153,8 +153,8 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                   if (exerciseName != null) {
                     log(exerciseName);
                     setState(() {
-                      widget.template.addExercise(
-                          Exercise(name: exerciseName, note: "", reps: []));
+                      widget.template.addExercise(Exercise(
+                          name: exerciseName, note: "", reps: [], weights: []));
                     });
                   }
                 },
@@ -287,6 +287,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
                         onPressed: () {
                           setState(() {
                             exercise.reps.add(0);
+                            exercise.weights.add(0);
                           });
                         },
                         icon: const Icon(
@@ -486,6 +487,7 @@ class _EditTemplateScreenState extends State<EditTemplateScreen> {
         onPressed: () {
           setState(() {
             exercise.reps.removeAt(i);
+            exercise.weights.removeAt(i);
           });
         },
         icon: const Icon(

@@ -114,6 +114,7 @@ class TemplateGroup {
         "name": exercise.name,
         "note": exercise.note,
         "reps": exercise.reps,
+        "weights": exercise.weights,
       };
       exerciseRef.set(exerciseInfo);
     }
